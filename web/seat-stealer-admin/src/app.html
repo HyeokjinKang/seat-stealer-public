@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+		<style>
+			body {
+				width: 100vw;
+				height: 100vh;
+				font-family: 'Pretendard Variable', '나눔바른고딕', -apple-system, system-ui, Arial;
+				letter-spacing: -0.2px;
+				padding: 0;
+				margin: 0;
+			}
+
+			input {
+				font-family: 'Pretendard Variable', '나눔바른고딕', -apple-system, system-ui, Arial;
+				letter-spacing: -0.2px;
+			}
+
+			button {
+				font-family: 'Pretendard Variable', '나눔바른고딕', -apple-system, system-ui, Arial;
+				letter-spacing: -0.2px;
+			}
+
+			h1 {
+				margin: 0;
+				font-size: 3vh;
+				font-weight: 400;
+			}
+
+			h3 {
+				margin: 0;
+				font-size: 2vh;
+				font-weight: 400;
+			}
+		</style>
+		%sveltekit.head%
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>

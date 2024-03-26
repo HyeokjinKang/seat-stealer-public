@@ -1,0 +1,80 @@
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	const version = '1.0';
+</script>
+
+<div id="app">
+	<h1>Seat Stealer 관리자</h1>
+	<div id="buttonsContainer">
+		<button
+			on:click={() => {
+				goto('/setup');
+			}}>Seat Stealer가 처음이에요</button
+		>
+		<button
+			on:click={() => {
+				goto('/load');
+			}}>전에 설정한 파일을 불러올래요</button
+		>
+	</div>
+	<div id="footer">
+		<span id="ver">v{version}</span>
+		<span id="credit">ⓒCoupyworks, 2024.</span>
+	</div>
+</div>
+
+<style>
+	button {
+		background-color: #fff;
+		border: solid 1px #aaa;
+		color: #888;
+		font-size: 2vh;
+		width: 20vw;
+		height: 3vw;
+		border-radius: 4vh;
+		margin: 1vh 0;
+		cursor: pointer;
+		transition-duration: 0.1s;
+	}
+
+	button:hover {
+		color: #555;
+		border: solid 1px #555;
+	}
+
+	#app {
+		display: flex;
+		width: 100%;
+		height: 100%;
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-start;
+		padding: 3vh 0;
+		box-sizing: border-box;
+	}
+
+	#buttonsContainer {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	#footer {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	#ver {
+		font-size: 1.5vh;
+		color: #888;
+	}
+
+	#credit {
+		font-size: 1.7vh;
+		color: #555;
+	}
+</style>
