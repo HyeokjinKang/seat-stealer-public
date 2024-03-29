@@ -28,9 +28,9 @@
 		background-color: #fff;
 		border: solid 1px #aaa;
 		color: #888;
-		font-size: 2vh;
-		width: 20vw;
-		height: 3vw;
+		font-size: 2.2vh;
+		width: 22vw;
+		height: 5vh;
 		border-radius: 4vh;
 		margin: 1vh 0;
 		cursor: pointer;
