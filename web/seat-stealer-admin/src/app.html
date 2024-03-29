@@ -21,25 +21,26 @@
 			}
 
 			button {
+				padding: 0;
 				font-family: 'Pretendard Variable', '나눔바른고딕', -apple-system, system-ui, Arial;
 				letter-spacing: -0.2px;
 			}
 
 			h1 {
 				margin: 0;
-				font-size: 3vh;
+				font-size: 3.5vh;
 				font-weight: 400;
 			}
 
 			h3 {
-				margin: 0;
+				margin: 0.5vh 0 0 0;
 				font-size: 2vh;
 				font-weight: 400;
 			}
 		</style>
 		%sveltekit.head%
 	</head>
-	<body data-sveltekit-preload-data="hover">
+	<body data-sveltekit-preload-data="hover" onselectstart="return false" ondragstart="return false">
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>
