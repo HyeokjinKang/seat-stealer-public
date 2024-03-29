@@ -8,6 +8,17 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+
+	interface seatConfig {
+		name: string;
+		x: number;
+		y: number;
+		width?: number;
+	}
+
+	interface Config {
+		seat: seatConfig[];
+	}
 }
 
 export {};
