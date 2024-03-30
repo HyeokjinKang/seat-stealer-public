@@ -9,15 +9,21 @@ declare global {
 		// interface Platform {}
 	}
 
-	interface seatConfig {
+	interface Seat {
 		name: string;
 		x: number;
 		y: number;
 		width?: number;
 	}
 
+	interface Student {
+		name: string;
+		gender: string;
+	}
+
 	interface Config {
-		seat: seatConfig[];
+		seat: Seat[];
+		student: Student[];
 	}
 }
 
