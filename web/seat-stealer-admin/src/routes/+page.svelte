@@ -13,7 +13,7 @@
 		>
 		<button
 			on:click={() => {
-				goto('/load');
+				goto('/admin');
 			}}>전에 설정한 파일을 불러올래요</button
 		>
 	</div>
