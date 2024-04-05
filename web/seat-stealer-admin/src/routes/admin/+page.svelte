@@ -12,7 +12,7 @@
 
 <div id="app">
 	<h1>{title}</h1>
-	{#if $screen < 2}
+	{#if $screen < 5}
 		<Init {config} />
 	{/if}
 </div>

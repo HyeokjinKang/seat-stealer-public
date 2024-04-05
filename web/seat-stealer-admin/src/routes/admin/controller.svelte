@@ -1,5 +1,8 @@
 <script lang="ts">
-	import { screen } from '$lib/stores.ts';
+	import { screen, room } from '$lib/stores.ts';
+	import { env } from '$lib/config.ts';
+	import { v4 as uuidv4 } from 'uuid';
+	import { io, Socket } from 'socket.io-client';
 
 	export let config: Config;
 
@@ -7,11 +10,26 @@
 	let status = 0;
 	let statusText = '서버와 연결이 끊어짐';
 	let buttonText = '대기';
+	let socket: Socket;
+	room.set(uuidv4());
 
-	screen.subscribe((screen) => {
-		if (screen == 1) {
+	screen.subscribe((n) => {
+		if (n == 1) {
 			statusText = '서버에 연결하는 중';
 			status = 1;
+			socket = io(env.socket);
+			socket.on('connect', () => {
+				socket.emit('create', $room);
+				screen.set(2);
+			});
+			socket.on('joined room', (roomid) => {
+				if ($room == roomid) {
+					screen.set(3);
+				}
+			});
+		} else if (n == 2) {
+			statusText = '서버에 연결됨';
+			status = 2;
 		}
 	});
 </script>
