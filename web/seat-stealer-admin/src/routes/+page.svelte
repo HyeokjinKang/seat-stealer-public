@@ -29,7 +29,7 @@
 		border: solid 1px #aaa;
 		color: #888;
 		font-size: 2.2vh;
-		width: 22vw;
+		width: 30vw;
 		height: 5vh;
 		border-radius: 4vh;
 		margin: 1vh 0;
