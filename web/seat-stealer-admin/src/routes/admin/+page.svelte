@@ -12,11 +12,11 @@
 
 <div id="app">
 	<h1>{title}</h1>
-	{#if $screen < 5}
-		<Init {config} />
+	{#if $screen < 6}
+		<Init bind:config />
 	{/if}
 </div>
-<Controller {config} />
+<Controller bind:config />
 
 <style>
 	#app {
