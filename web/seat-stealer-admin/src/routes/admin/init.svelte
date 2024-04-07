@@ -73,7 +73,7 @@
 					clearInterval(interval);
 					screen.set(4);
 					setTimeout(() => {
-						qrContainer.style.display = 'flex';
+						screen.set(5);
 					}, 2000);
 				}
 			);
@@ -95,10 +95,12 @@
 
 <input type="file" id="jsonInput" accept=".json" on:change={dataLoaded} bind:this={input} />
 
-<div class={$screen == 4 ? 'fadeOut' : ''}>
-	<span id="log">{log}</span>
-</div>
-<div id="qrContainer" class={$screen == 4 ? 'fadeIn' : ''} bind:this={qrContainer}>
+{#if $screen < 5}
+	<div class={$screen == 4 ? 'fadeOut' : ''}>
+		<span id="log">{log}</span>
+	</div>
+{/if}
+<div id="qrContainer" class={$screen == 5 ? 'fadeIn' : ''} bind:this={qrContainer}>
 	<canvas bind:this={qrCanvas}></canvas>
 	<span id="qrText">위 QR코드를 스캔하고 접속하세요.</span>
 </div>
@@ -139,6 +141,7 @@
 		animation-duration: 2s;
 		animation-fill-mode: forwards;
 		animation-iteration-count: 1;
+		display: flex !important;
 	}
 
 	@keyframes fadeOut {
@@ -146,13 +149,8 @@
 			opacity: 1;
 		}
 
-		99% {
-			opacity: 0;
-		}
-
 		100% {
 			opacity: 0;
-			display: none;
 		}
 	}
 

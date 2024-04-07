@@ -11,6 +11,7 @@
 	let statusText = '서버와 연결이 끊어짐';
 	let buttonText = '대기';
 	let socket: Socket;
+	let online = {};
 	room.set(uuidv4());
 
 	screen.subscribe((n) => {
@@ -38,10 +39,25 @@
 	<div id="rowContainer">
 		<div class="row">
 			<div id="status" class={statusArr[status]}></div>
-			<span class="menuText">{statusText}</span>
+			<span class="menuText">
+				{#if $screen < 5}
+					{statusText}
+				{:else if $screen == 5}
+					접속자: {Object.keys(online).length}/{config.student.length}
+				{/if}
+			</span>
 		</div>
-		<button class="menuText">{buttonText}</button>
+		<button class="menuText disabled">{buttonText}</button>
 	</div>
+	{#if $screen >= 5}
+		<span id="students">
+			{#each config.student as student, i}
+				{#if i > 0},
+				{/if}
+				<span class={student.name in online ? '' : 'offline'}>{student.name}</span>
+			{/each}
+		</span>
+	{/if}
 </div>
 
 <style>
@@ -53,6 +69,11 @@
 
 	.menuText {
 		font-size: 1.7vh;
+		font-weight: 600;
+	}
+
+	.menuText.disabled {
+		color: #888;
 	}
 
 	.row {
@@ -60,6 +81,16 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: flex-start;
+	}
+
+	.offline {
+		color: #aaa;
+	}
+
+	#students {
+		color: #000;
+		margin-left: calc(1.2vh + 0.3em);
+		font-size: 1.7vh;
 	}
 
 	#container {
@@ -77,6 +108,7 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
+		margin-bottom: 0.5vh;
 	}
 
 	#status {
