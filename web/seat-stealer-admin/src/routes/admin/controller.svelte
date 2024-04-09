@@ -54,12 +54,14 @@
 
 			socket.on('disconnected', (id) => {
 				let name = onlineID[id];
-				delete onlineID[id];
-				delete online[name];
-				config.student = config.student;
-				online = online;
-				if (Object.keys(online).length != config.student.length) {
-					buttonDisabled = true;
+				if (name) {
+					delete onlineID[id];
+					delete online[name];
+					config.student = config.student;
+					online = online;
+					if (Object.keys(online).length != config.student.length) {
+						buttonDisabled = true;
+					}
 				}
 			});
 
