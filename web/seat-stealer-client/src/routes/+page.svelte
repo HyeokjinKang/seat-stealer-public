@@ -1,2 +1,1 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<span>TV의 QR코드를 스캔하여 접속하세요.</span>
