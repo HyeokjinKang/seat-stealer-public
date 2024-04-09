@@ -208,11 +208,11 @@
 	<h1>{title[screen]}</h1>
 	<h3>{subtitle[screen]}</h3>
 	{#if screen == 0}
-		<Seat {config} />
+		<Seat bind:config />
 	{:else if screen == 1}
-		<Student {config} />
+		<Student bind:config />
 	{:else if screen == 2}
-		<Final {config} />
+		<Final bind:config />
 	{/if}
 	<div id="buttonsContainer">
 		<button on:click={back}>← 이전</button>
