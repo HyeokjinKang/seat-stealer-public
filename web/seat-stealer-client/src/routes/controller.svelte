@@ -2,6 +2,7 @@
 	import { io, Socket } from 'socket.io-client';
 	import { env } from '$lib/config';
 	import { room, data, screen, error } from '$lib/stores';
+	import { goto } from '$app/navigation';
 
 	const statusColorArr = ['red', 'yellow', 'green', 'gray'];
 	const statusArr = ['연결 실패, 재시도 중', '서버에 연결 중', '연결됨', '연결 끊김'];
@@ -39,10 +40,24 @@
 		}
 	});
 
+	socket.on('name submit result', (err) => {
+		if (err) {
+			error.set(err);
+		} else {
+			screen.set(1);
+		}
+	});
+
+	socket.on('fatal', (err) => {
+		socket.disconnect();
+		goto('/');
+	});
+
 	data.subscribe((name) => {
 		if (name == '') return;
 		if ($screen == 0) {
-			socket.emit('name', name);
+			socket.emit('name submit', name);
+			data.set('');
 		}
 	});
 </script>

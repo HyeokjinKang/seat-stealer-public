@@ -21,7 +21,12 @@
 		if (err == '') return;
 		if (err == 'room not exist') {
 			roomid = null;
+		} else if (err == 'same name client exist') {
+			alert('같은 이름으로 접속한 기기가 있습니다.');
+		} else if (err == 'name not exist') {
+			alert('등록되지 않은 학생입니다.');
 		}
+		error.set('');
 	});
 </script>
 
@@ -29,9 +34,13 @@
 	<span>서버가 존재하지 않습니다.</span>
 {:else}
 	<div>
-		<span>이름을 입력하세요.</span>
-		<input type="text" bind:value={name} />
-		<button on:click={submit}>진행 →</button>
+		{#if $screen == 0}
+			<span>이름을 입력하세요.</span>
+			<input type="text" bind:value={name} />
+			<button on:click={submit}>진행 →</button>
+		{:else if $screen == 1}
+			<span>잠시만 기다려주세요.</span>
+		{/if}
 	</div>
 {/if}
 

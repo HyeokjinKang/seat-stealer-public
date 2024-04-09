@@ -3,15 +3,17 @@
 	import { env } from '$lib/config.ts';
 	import { v4 as uuidv4 } from 'uuid';
 	import { io, Socket } from 'socket.io-client';
+	import { goto } from '$app/navigation';
 
 	export let config: Config;
 
 	const statusArr = ['red', 'yellow', 'green'];
 	let status = 0;
 	let statusText = '서버와 연결이 끊어짐';
-	let buttonText = '대기';
 	let socket: Socket;
-	let online = {};
+	let online: Online = {};
+	let onlineID: OnlineID = {};
+	let buttonDisabled: boolean = true;
 	room.set(uuidv4());
 
 	screen.subscribe((n) => {
@@ -19,14 +21,51 @@
 			statusText = '서버에 연결하는 중';
 			status = 1;
 			socket = io(env.socket);
+
 			socket.on('connect', () => {
 				socket.emit('create', $room);
 				screen.set(2);
 			});
+
 			socket.on('joined room', (roomid) => {
 				if ($room == roomid) {
 					screen.set(3);
 				}
+			});
+
+			socket.on('name submit', (name, id) => {
+				if (online[name]) {
+					socket.emit('name submit result', id, 'same name client exist');
+				} else {
+					for (let student of config.student) {
+						if (name == student.name) {
+							online[name] = id;
+							onlineID[id] = name;
+							socket.emit('name submit result', id);
+							if (Object.keys(online).length == config.student.length) {
+								buttonDisabled = false;
+							}
+							return;
+						}
+					}
+					socket.emit('name submit result', id, 'name not exist');
+				}
+			});
+
+			socket.on('disconnected', (id) => {
+				let name = onlineID[id];
+				delete onlineID[id];
+				delete online[name];
+				config.student = config.student;
+				online = online;
+				if (Object.keys(online).length != config.student.length) {
+					buttonDisabled = true;
+				}
+			});
+
+			socket.on('disconnect', (reason, details) => {
+				alert('서버와의 연결이 끊어졌습니다. 프로그램을 종료합니다.');
+				goto('/');
 			});
 		} else if (n == 2) {
 			statusText = '서버에 연결됨';
@@ -47,7 +86,9 @@
 				{/if}
 			</span>
 		</div>
-		<button class="menuText disabled">{buttonText}</button>
+		<button class="menuText {buttonDisabled ? 'disabled' : ''}"
+			>{buttonDisabled ? '대기' : '진행 →'}</button
+		>
 	</div>
 	{#if $screen >= 5}
 		<span id="students">

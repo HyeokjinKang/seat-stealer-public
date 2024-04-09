@@ -25,6 +25,14 @@ declare global {
 		seat: Seat[];
 		student: Student[];
 	}
+
+	interface Online {
+		[name: string]: string;
+	}
+
+	interface OnlineID {
+		[id: string]: string;
+	}
 }
 
 export {};
