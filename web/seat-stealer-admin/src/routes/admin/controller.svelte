@@ -74,6 +74,12 @@
 			status = 2;
 		}
 	});
+
+	const forceDisconnect = (name: string) => {
+		if (online[name])
+			if (confirm(`${name} 학생의 연결을 강제로 끊으시겠습니까?`))
+				socket.emit('force disconnect', online[name]);
+	};
 </script>
 
 <div id="container">
@@ -94,10 +100,18 @@
 	</div>
 	{#if $screen >= 5}
 		<span id="students">
+			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			{#each config.student as student, i}
 				{#if i > 0},
 				{/if}
-				<span class={student.name in online ? '' : 'offline'}>{student.name}</span>
+				<!-- svelte-ignore missing-declaration -->
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<span
+					class={student.name in online ? 'online' : 'offline'}
+					on:click={() => {
+						forceDisconnect(student.name);
+					}}>{student.name}</span
+				>
 			{/each}
 		</span>
 	{/if}
@@ -128,6 +142,10 @@
 
 	.offline {
 		color: #aaa;
+	}
+
+	.online {
+		cursor: pointer;
 	}
 
 	#students {

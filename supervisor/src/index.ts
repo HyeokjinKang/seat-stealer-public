@@ -26,6 +26,10 @@ io.on("connection", (socket) => {
     io.to(id).emit("name submit result", error);
   });
 
+  socket.on("force disconnect", (id) => {
+    io.to(id).emit("fatal");
+  });
+
   socket.on("disconnecting", () => {
     const index = admins.indexOf(socket.id);
     const room = Array.from(socket.rooms).filter(item => item != socket.id)[0];
