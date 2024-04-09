@@ -8,7 +8,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("join", (room) => {
-    console.log(io.sockets.adapter.rooms.get(room));
     if (io.sockets.adapter.rooms.get(room)) {
       socket.join(room);
     } else {
