@@ -9,12 +9,12 @@
 		<button
 			on:click={() => {
 				goto('/setup');
-			}}>Seat Stealer가 처음이에요</button
+			}}>기본 설정</button
 		>
 		<button
 			on:click={() => {
 				goto('/admin');
-			}}>전에 설정한 파일을 불러올래요</button
+			}}>온라인 자리 배치</button
 		>
 	</div>
 	<div id="footer">
