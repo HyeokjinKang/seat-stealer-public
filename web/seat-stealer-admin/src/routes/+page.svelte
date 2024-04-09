@@ -9,7 +9,12 @@
 		<button
 			on:click={() => {
 				goto('/setup');
-			}}>기본 설정</button
+			}}>새로운 설정 생성</button
+		>
+		<button
+			on:click={() => {
+				goto('/setup?edit=true');
+			}}>기존 설정 수정</button
 		>
 		<button
 			on:click={() => {

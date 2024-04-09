@@ -3,6 +3,8 @@
 	import Seat from './seat.svelte';
 	import Student from './student.svelte';
 	import Final from './final.svelte';
+	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
 
 	let config: Config = {
 		seat: [
@@ -166,8 +168,12 @@
 		student: []
 	};
 
-	let nextText = '다음 →';
+	let input: HTMLInputElement;
+	let edit = $page.url.searchParams.get('edit');
+	let isFileDialogOpened = false;
+	let loaded = false;
 
+	let nextText = '다음 →';
 	const title = ['교실이 어떤 모습인가요?', '학생 정보를 입력해주세요.', '설정이 완료되었어요.'];
 	const subtitle = [
 		'교탁과 책상을 배치해 교실과 유사한 모습으로 만들어주세요.',
@@ -202,7 +208,56 @@
 		}
 		screen++;
 	};
+
+	const dataLoaded = (event: Event) => {
+		loaded = true;
+		try {
+			const target = event.target as HTMLInputElement;
+			if (target.files == null) throw new Error('Target files not exist');
+			let file = target.files[0];
+			let reader = new FileReader();
+			reader.onload = (e) => {
+				try {
+					if (e.target == null) throw new Error('Target not exist');
+					if (typeof e.target.result != 'string') throw new Error('Wrong type error');
+					config = JSON.parse(e.target.result);
+					if (config.seat == undefined || config.student == undefined)
+						throw new Error('Empty config error');
+					if (config.seat.length == 0 || config.student.length == 0)
+						throw new Error('Empty data error');
+				} catch {
+					alert('설정파일이 올바르지 않습니다.');
+					goto('/');
+				}
+			};
+			reader.readAsText(file);
+		} catch {
+			alert('파일을 불러오지 못했습니다.');
+			goto('/');
+		}
+	};
+
+	window.addEventListener('focus', function (e) {
+		if (isFileDialogOpened) {
+			isFileDialogOpened = false;
+			setTimeout(() => {
+				if (!loaded) {
+					alert('파일이 선택되지 않았습니다.');
+					goto('/');
+				}
+			}, 500);
+		}
+	});
+
+	onMount(() => {
+		if (edit == 'true') {
+			isFileDialogOpened = true;
+			input.click();
+		}
+	});
 </script>
+
+<input type="file" id="jsonInput" accept=".json" on:change={dataLoaded} bind:this={input} />
 
 <div id="app">
 	<h1>{title[screen]}</h1>
@@ -221,6 +276,10 @@
 </div>
 
 <style>
+	#jsonInput {
+		display: none;
+	}
+
 	button {
 		font-size: 1.7vh;
 		background-color: #fff;
