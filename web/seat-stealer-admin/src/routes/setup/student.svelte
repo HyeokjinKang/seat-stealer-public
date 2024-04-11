@@ -21,11 +21,17 @@
 					gender: splitArray[1]
 				});
 			}
+			config.student = output;
+			nowNum = output.length;
+			for (const [student, seat] of Object.entries(config.pre.student)) {
+				if (!config.student.find((data) => data.name == student)) {
+					delete config.pre.student[student];
+					delete config.pre.seat[seat];
+				}
+			}
 		} catch (e) {
 			console.log('ignoring..');
 		}
-		config.student = output;
-		nowNum = output.length;
 	};
 
 	onMount(() => {
