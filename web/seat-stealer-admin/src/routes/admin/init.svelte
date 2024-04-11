@@ -77,6 +77,7 @@
 					}, 2000);
 				}
 			);
+			console.log(`${env.student}/join?room=${$room}`);
 		}
 	});
 
