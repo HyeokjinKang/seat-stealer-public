@@ -2,8 +2,16 @@
 	import { onMount } from 'svelte';
 
 	export let config: Config;
+	export let screen: number;
 	let w = 0;
 	let m = 0;
+
+	const onKeyDown = (e: KeyboardEvent) => {
+		if (e.key == 'Shift') {
+			screen = 2;
+		}
+	};
+
 	onMount(() => {
 		for (let data of config.student) {
 			if (data.gender == '남') m++;
@@ -18,6 +26,8 @@
 	<span>남학생 : {m}</span>
 	<span>여학생 : {w}</span>
 </div>
+
+<svelte:window on:keydown|preventDefault={onKeyDown} />
 
 <style>
 	span {

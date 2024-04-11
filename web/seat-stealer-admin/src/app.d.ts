@@ -14,11 +14,13 @@ declare global {
 		x: number;
 		y: number;
 		width?: number;
+		pre?: string;
 	}
 
 	interface Student {
 		name: string;
 		gender: string;
+		pre?: string;
 	}
 
 	interface Config {

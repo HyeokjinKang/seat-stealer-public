@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Seat from './seat.svelte';
+	import Assignment from './assignment.svelte';
 	import Student from './student.svelte';
 	import Final from './final.svelte';
 	import { page } from '$app/stores';
@@ -173,11 +174,16 @@
 	let isFileDialogOpened = false;
 	let loaded = false;
 
-	let nextText = '다음 →';
-	const title = ['교실이 어떤 모습인가요?', '학생 정보를 입력해주세요.', '설정이 완료되었어요.'];
+	const title = [
+		'교실이 어떤 모습인가요?',
+		'학생 정보를 입력해주세요.',
+		'학생 미리 배정',
+		'설정이 완료되었어요.'
+	];
 	const subtitle = [
 		'교탁과 책상을 배치해 교실과 유사한 모습으로 만들어주세요.',
 		'모든 데이터는 절대로 서버에 저장되지 않습니다.',
+		'미리 배정 데이터는 "일괄 랜덤 자리 배치"에서만 적용됩니다.',
 		'설정 데이터를 저장하여 잘 보관해주세요.'
 	];
 
@@ -187,7 +193,7 @@
 		if (screen == 0) {
 			goto('/');
 		} else {
-			if (screen == 2) nextText = '다음 →';
+			if (screen == 3) screen--;
 			screen--;
 		}
 	};
@@ -196,9 +202,8 @@
 		if (screen == 1) {
 			if (config.seat.length - 1 != config.student.length)
 				return alert('학생 수와 자리 수가 일치하지 않습니다.');
-			nextText = '저장 & 설정 종료';
-		}
-		if (screen == 2) {
+			screen++;
+		} else if (screen == 3) {
 			const a = document.createElement('a');
 			const file = new Blob([JSON.stringify(config)], { type: 'application/json' });
 			a.href = URL.createObjectURL(file);
@@ -267,11 +272,13 @@
 	{:else if screen == 1}
 		<Student bind:config />
 	{:else if screen == 2}
-		<Final bind:config />
+		<Assignment bind:config />
+	{:else if screen == 3}
+		<Final bind:config bind:screen />
 	{/if}
 	<div id="buttonsContainer">
 		<button on:click={back}>← 이전</button>
-		<button on:click={next}>{nextText}</button>
+		<button on:click={next}>{screen == 3 ? '저장 & 설정 종료' : '다음 →'}</button>
 	</div>
 </div>
 

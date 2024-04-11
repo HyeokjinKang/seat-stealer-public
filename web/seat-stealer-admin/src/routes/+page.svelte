@@ -21,6 +21,11 @@
 				goto('/admin');
 			}}>온라인 자리 배치</button
 		>
+		<button
+			on:click={() => {
+				goto('/random');
+			}}>일괄 랜덤 자리 배치</button
+		>
 	</div>
 	<div id="footer">
 		<span id="ver">v{version}</span>
