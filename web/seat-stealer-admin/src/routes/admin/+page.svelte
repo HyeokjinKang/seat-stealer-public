@@ -6,7 +6,11 @@
 	let title = 'Online Seat Stealer';
 	let config: Config = {
 		seat: [],
-		student: []
+		student: [],
+		pre: {
+			seat: {},
+			student: {}
+		}
 	};
 </script>
 

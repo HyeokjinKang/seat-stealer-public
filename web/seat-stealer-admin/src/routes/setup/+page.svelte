@@ -166,7 +166,11 @@
 				y: 53
 			}
 		],
-		student: []
+		student: [],
+		pre: {
+			seat: {},
+			student: {}
+		}
 	};
 
 	let input: HTMLInputElement;

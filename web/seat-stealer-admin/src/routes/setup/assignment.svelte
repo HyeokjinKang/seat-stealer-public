@@ -10,24 +10,14 @@
 	const assignment = (e: Event) => {
 		const target = e.target as HTMLSelectElement;
 		if (target.value == '') {
-			for (let i = 0; i < config.student.length; i++) {
-				if (config.student[i].name == config.seat[changingSeat].pre) {
-					delete config.student[i].pre;
-					break;
-				}
-			}
-			delete config.seat[changingSeat].pre;
+			delete config.pre.student[config.pre.seat[config.seat[changingSeat].name]];
+			delete config.pre.seat[config.seat[changingSeat].name];
 		} else {
-			for (let i = 0; i < config.student.length; i++) {
-				if (config.student[i].name == target.value) {
-					if (config.student[i].pre) {
-						alert('이미 다른 배정된 학생입니다.');
-					} else {
-						config.student[i].pre = config.seat[changingSeat].name;
-						config.seat[changingSeat].pre = target.value;
-					}
-					break;
-				}
+			if (config.pre.student[target.value]) {
+				alert('이미 다른 자리에 배정된 학생입니다.');
+			} else {
+				config.pre.seat[config.seat[changingSeat].name] = target.value;
+				config.pre.student[target.value] = config.seat[changingSeat].name;
 			}
 		}
 		changingSeat = 0;
@@ -57,8 +47,8 @@
 						<option>{student.name}</option>
 					{/each}
 				</select>
-			{:else if seat.pre}
-				<span>{seat.pre}</span>
+			{:else if config.pre.seat[seat.name]}
+				<span>{config.pre.seat[seat.name]}</span>
 			{:else}
 				<span>{seat.name}</span>
 			{/if}
