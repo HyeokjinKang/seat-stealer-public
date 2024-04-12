@@ -1,7 +1,11 @@
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 
 const io = new Server();
 let admins: string[] = [];
+
+const getRoom = (socket: Socket) => {
+  return Array.from(socket.rooms).filter(item => item != socket.id)[0];
+};
 
 io.on("connection", (socket) => {
   socket.on('create', (room) => {
@@ -18,12 +22,26 @@ io.on("connection", (socket) => {
   });
 
   socket.on("name submit", (name) => {
-    const room = Array.from(socket.rooms).filter(item => item != socket.id)[0];
+    const room = getRoom(socket);
     io.to(room).emit("name submit", name, socket.id);
+  });
+
+  socket.on("seat submit", (seat) => {
+    const room = getRoom(socket);
+    io.to(room).emit("seat submit", seat, socket.id);
+  });
+
+  socket.on("screen set", (screen) => {
+    const room = getRoom(socket);
+    io.to(room).emit("screen set", screen);
   });
 
   socket.on("name submit result", (id, error) => {
     io.to(id).emit("name submit result", error);
+  });
+
+  socket.on("seat submit result", (id, error) => {
+    io.to(id).emit("seat submit result", error);
   });
 
   socket.on("force disconnect", (id) => {

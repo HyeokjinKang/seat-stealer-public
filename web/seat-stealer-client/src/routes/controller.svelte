@@ -48,17 +48,35 @@
 		}
 	});
 
+	socket.on('seat submit result', (err) => {
+		if (err) {
+			error.set(err);
+		} else {
+			screen.set(3);
+		}
+	});
+
 	socket.on('fatal', (err) => {
 		socket.disconnect();
 		goto('/');
 	});
 
-	data.subscribe((name) => {
-		if (name == '') return;
-		if ($screen == 0) {
-			socket.emit('name submit', name);
-			data.set('');
+	socket.on('screen set', (screen) => {
+		switch (screen) {
+			case 'vote':
+				goto('/vote');
+				break;
 		}
+	});
+
+	data.subscribe((input) => {
+		if (input == '') return;
+		if ($screen == 0) {
+			socket.emit('name submit', input);
+		} else if ($screen == 2) {
+			socket.emit('seat submit', input);
+		}
+		data.set('');
 	});
 </script>
 

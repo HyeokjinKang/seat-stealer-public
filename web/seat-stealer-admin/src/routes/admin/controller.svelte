@@ -14,7 +14,7 @@
 	let online: Online = {};
 	let onlineID: OnlineID = {};
 	let vote: Vote = {};
-	let votedNum = 0;
+	let voted: string[] = [];
 	let buttonDisabled: boolean = true;
 	room.set(uuidv4());
 
@@ -51,6 +51,31 @@
 						}
 					}
 					socket.emit('name submit result', id, 'name not exist');
+				}
+			});
+
+			socket.on('seat submit', (seat: string, id: string) => {
+				if (onlineID[id]) {
+					if (voted.includes(id)) {
+						socket.emit('seat submit result', id, 'already voted');
+						return;
+					}
+					for (let seatElement of config.seat) {
+						if (seat == seatElement.name) {
+							voted.push(id);
+							voted = voted; //for update(dumb svelte)
+							if (vote[seat] == undefined) vote[seat] = [id];
+							else vote[seat].push(id);
+							socket.emit('seat submit result', id);
+							if (Object.keys(online).length == voted.length) {
+								buttonDisabled = false;
+							}
+							return;
+						}
+					}
+					socket.emit('seat submit result', id, 'seat not exist');
+				} else {
+					socket.emit('seat submit result', id, 'name not exist');
 				}
 			});
 
@@ -103,7 +128,7 @@
 				{:else if $screen == 5}
 					접속자: {Object.keys(online).length}/{config.student.length}
 				{:else if $screen == 6}
-					접속자: {Object.keys(online).length}/{config.student.length}, 투표 참여: {votedNum}/{Object.keys(
+					접속자: {Object.keys(online).length}/{config.student.length}, 투표 참여: {voted.length}/{Object.keys(
 						online
 					).length}
 				{/if}
