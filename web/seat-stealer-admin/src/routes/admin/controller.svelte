@@ -99,7 +99,7 @@
 		>
 	</div>
 	{#if $screen >= 5}
-		<span id="students">
+		<div id="students">
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			{#each config.student as student, i}
 				{#if i > 0},
@@ -113,7 +113,7 @@
 					}}>{student.name}</span
 				>
 			{/each}
-		</span>
+		</div>
 	{/if}
 </div>
 
@@ -122,6 +122,11 @@
 		appearance: none;
 		border: none;
 		background: none;
+		cursor: pointer;
+	}
+
+	button.disabled {
+		cursor: default;
 	}
 
 	.menuText {
