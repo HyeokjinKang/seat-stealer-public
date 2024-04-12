@@ -41,6 +41,10 @@ declare global {
 	interface OnlineID {
 		[id: string]: string;
 	}
+
+	interface Vote {
+		[seat: string]: string[];
+	}
 }
 
 export {};

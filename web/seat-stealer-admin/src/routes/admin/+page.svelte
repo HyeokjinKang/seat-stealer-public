@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Init from './init.svelte';
+	import Seat from './seat.svelte';
 	import Controller from './controller.svelte';
 	import { screen } from '$lib/stores.ts';
 
@@ -12,12 +13,22 @@
 			student: {}
 		}
 	};
+
+	screen.subscribe((num) => {
+		switch (num) {
+			case 6:
+				title = '원하는 자리에 투표해주세요.';
+				break;
+		}
+	});
 </script>
 
 <div id="app">
 	<h1>{title}</h1>
 	{#if $screen < 6}
 		<Init bind:config />
+	{:else}
+		<Seat bind:config />
 	{/if}
 </div>
 <Controller bind:config />

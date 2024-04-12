@@ -13,6 +13,8 @@
 	let socket: Socket;
 	let online: Online = {};
 	let onlineID: OnlineID = {};
+	let vote: Vote = {};
+	let votedNum = 0;
 	let buttonDisabled: boolean = true;
 	room.set(uuidv4());
 
@@ -80,6 +82,15 @@
 			if (confirm(`${name} 학생의 연결을 강제로 끊으시겠습니까?`))
 				socket.emit('force disconnect', online[name]);
 	};
+
+	const next = () => {
+		if (buttonDisabled) return;
+		if ($screen == 5) {
+			buttonDisabled = true;
+			socket.emit('screen set', 'vote');
+			screen.set(6);
+		}
+	};
 </script>
 
 <div id="container">
@@ -91,10 +102,14 @@
 					{statusText}
 				{:else if $screen == 5}
 					접속자: {Object.keys(online).length}/{config.student.length}
+				{:else if $screen == 6}
+					접속자: {Object.keys(online).length}/{config.student.length}, 투표 참여: {votedNum}/{Object.keys(
+						online
+					).length}
 				{/if}
 			</span>
 		</div>
-		<button class="menuText {buttonDisabled ? 'disabled' : ''}"
+		<button class="menuText {buttonDisabled ? 'disabled' : ''}" on:click={next}
 			>{buttonDisabled ? '대기' : '진행 →'}</button
 		>
 	</div>
