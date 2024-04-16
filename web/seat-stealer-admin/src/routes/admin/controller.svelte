@@ -89,6 +89,12 @@
 					if (Object.keys(online).length != config.student.length) {
 						buttonDisabled = true;
 					}
+					if (voted.includes(id)) {
+						voted = voted.filter((value) => value != id);
+						for (let seat in vote) {
+							vote[seat] = vote[seat].filter((value) => value != id);
+						}
+					}
 				}
 			});
 
