@@ -4,6 +4,7 @@
 	import { v4 as uuidv4 } from 'uuid';
 	import { io, Socket } from 'socket.io-client';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	export let config: Config;
 
@@ -16,6 +17,7 @@
 	let vote: Vote = {};
 	let voted: string[] = [];
 	let buttonDisabled: boolean = true;
+	let SnackBar: Window['SnackBar'];
 	room.set(uuidv4());
 
 	screen.subscribe((n) => {
@@ -41,6 +43,12 @@
 				} else {
 					for (let student of config.student) {
 						if (name == student.name) {
+							SnackBar({
+								status: 'success',
+								message: `${name} 학생이 연결되었습니다.`,
+								timeout: 2000,
+								position: 'tr'
+							});
 							online[name] = id;
 							onlineID[id] = name;
 							socket.emit('name submit result', id);
@@ -62,6 +70,12 @@
 					}
 					for (let seatElement of config.seat) {
 						if (seat == seatElement.name) {
+							SnackBar({
+								status: 'info',
+								message: `${onlineID[id]} 학생이 투표했습니다.`,
+								timeout: 2000,
+								position: 'tr'
+							});
 							voted.push(id);
 							voted = voted; //for update(dumb svelte)
 							if (vote[seat] == undefined) vote[seat] = [id];
@@ -82,6 +96,12 @@
 			socket.on('disconnected', (id) => {
 				let name = onlineID[id];
 				if (name) {
+					SnackBar({
+						status: 'error',
+						message: `${name} 학생의 연결이 끊어졌습니다.`,
+						timeout: 4000,
+						position: 'tr'
+					});
 					delete onlineID[id];
 					delete online[name];
 					config.student = config.student;
@@ -120,8 +140,16 @@
 			buttonDisabled = true;
 			socket.emit('screen set', 'vote');
 			screen.set(6);
+		} else if ($screen == 6) {
+			buttonDisabled = true;
+			socket.emit('screen set', 'result');
+			screen.set(7);
 		}
 	};
+
+	onMount(() => {
+		SnackBar = window.SnackBar;
+	});
 </script>
 
 <div id="container">
