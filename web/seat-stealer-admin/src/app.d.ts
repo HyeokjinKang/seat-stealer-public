@@ -45,6 +45,10 @@ declare global {
 	interface Vote {
 		[seat: string]: string[];
 	}
+
+	interface Window {
+		SnackBar: (option: object) => void;
+	}
 }
 
 export {};
