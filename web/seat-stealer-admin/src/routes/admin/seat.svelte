@@ -1,5 +1,14 @@
 <script lang="ts">
+	import { screen } from '$lib/stores.ts';
 	export let config: Config;
+
+	let seats = [];
+
+	screen.subscribe((n) => {
+		if (n == 7) {
+			//show result
+		}
+	});
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -13,6 +22,7 @@
 			style="margin-left: {seat.x}vw; margin-top: {seat.y}vh; {seat.width
 				? `width: ${seat.width}vw;`
 				: ''}"
+			bind:this={seats[i]}
 		>
 			<span>{seat.name}</span>
 		</div>

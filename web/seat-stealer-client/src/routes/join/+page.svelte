@@ -1,16 +1,11 @@
 <script lang="ts">
 	import { room, data, screen, error } from '$lib/stores';
-	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 
-	let roomid = $page.url.searchParams.get('room');
 	let name = '';
 
 	onMount(() => {
 		screen.set(0);
-		if (roomid != null) {
-			room.set(roomid);
-		}
 	});
 
 	const submit = () => {
@@ -20,7 +15,7 @@
 	error.subscribe((err) => {
 		if (err == '') return;
 		if (err == 'room not exist') {
-			roomid = null;
+			room.set('');
 		} else if (err == 'same name client exist') {
 			alert('같은 이름으로 접속한 기기가 있습니다.');
 		} else if (err == 'name not exist') {
@@ -30,7 +25,7 @@
 	});
 </script>
 
-{#if roomid == null}
+{#if $room == ''}
 	<span>서버가 존재하지 않습니다.</span>
 {:else}
 	<div>

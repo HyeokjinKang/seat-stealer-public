@@ -52,8 +52,16 @@
 							online[name] = id;
 							onlineID[id] = name;
 							socket.emit('name submit result', id);
-							if (Object.keys(online).length == config.student.length) {
-								buttonDisabled = false;
+							config.student = config.student;
+							online = online;
+							voted = voted;
+							if ($screen == 6) {
+								socket.emit('id screen set', 'vote', id);
+								buttonDisabled = true;
+							} else {
+								if (Object.keys(online).length == config.student.length) {
+									buttonDisabled = false;
+								}
 							}
 							return;
 						}

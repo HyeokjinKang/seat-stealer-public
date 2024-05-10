@@ -36,6 +36,10 @@ io.on("connection", (socket) => {
     io.to(room).emit("screen set", screen);
   });
 
+  socket.on("id screen set", (screen, id) => {
+    io.to(id).emit("screen set", screen);
+  });
+
   socket.on("name submit result", (id, error) => {
     io.to(id).emit("name submit result", error);
   });

@@ -2,12 +2,16 @@
 	import { io, Socket } from 'socket.io-client';
 	import { env } from '$lib/config';
 	import { room, data, screen, error } from '$lib/stores';
+	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	const statusColorArr = ['red', 'yellow', 'green', 'gray'];
 	const statusArr = ['연결 실패, 재시도 중', '서버에 연결 중', '연결됨', '연결 끊김'];
 	let status = 1;
+	let roomid = $page.url.searchParams.get('room');
 	let socket: Socket = io(env.socket);
+	let isRegistered = false;
 
 	room.subscribe((id) => {
 		if (id == '') return;
@@ -44,6 +48,7 @@
 		if (err) {
 			error.set(err);
 		} else {
+			isRegistered = true;
 			screen.set(1);
 		}
 	});
@@ -64,7 +69,7 @@
 	socket.on('screen set', (screen) => {
 		switch (screen) {
 			case 'vote':
-				goto('/vote');
+				goto(`/vote?room=${roomid}`);
 				break;
 		}
 	});
@@ -77,6 +82,18 @@
 			socket.emit('seat submit', input);
 		}
 		data.set('');
+	});
+
+	screen.subscribe((n) => {
+		if (n != 0 && !isRegistered) {
+			goto(`/join?room=${roomid}`);
+		}
+	});
+
+	onMount(() => {
+		if (roomid != null) {
+			room.set(roomid);
+		}
 	});
 </script>
 
