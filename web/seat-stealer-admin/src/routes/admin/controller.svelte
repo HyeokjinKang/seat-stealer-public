@@ -27,16 +27,16 @@
 		loop: true
 	});
 
-	const bgm2_1 = new Howl({
+	const bgm2 = new Howl({
 		src: ['/music/2_1.mp3'],
 		html5: true,
 		loop: false,
 		onend: () => {
-			bgm2_2.play();
+			bgm2_1.play();
 		}
 	});
 
-	const bgm2_2 = new Howl({
+	const bgm2_1 = new Howl({
 		src: ['/music/2_2.mp3'],
 		html5: true,
 		loop: true
@@ -44,6 +44,12 @@
 
 	const bgm3 = new Howl({
 		src: ['/music/3.mp3'],
+		html5: true,
+		loop: false
+	});
+
+	const bgm4 = new Howl({
+		src: ['/music/4.mp3'],
 		html5: true,
 		loop: false
 	});
@@ -161,6 +167,30 @@
 		} else if (n == 2) {
 			statusText = '서버에 연결됨';
 			status = 2;
+		} else if (n == 5) {
+			bgm4.play();
+		} else if (n == 6) {
+			if (bgm4.playing()) {
+				bgm4.fade(1, 0, 500);
+				setTimeout(() => {
+					bgm4.stop();
+					bgm4.volume(1);
+				}, 500);
+			} else {
+				bgm3.fade(1, 0, 500);
+				setTimeout(() => {
+					bgm3.stop();
+					bgm3.volume(1);
+				}, 500);
+			}
+			bgm2.play();
+		} else if (n == 7) {
+			bgm2_1.fade(1, 0, 500);
+			setTimeout(() => {
+				bgm2_1.stop();
+				bgm2_1.volume(1);
+			}, 500);
+			bgm3.play();
 		}
 	});
 
