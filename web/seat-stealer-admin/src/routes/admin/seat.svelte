@@ -2,13 +2,41 @@
 	import { screen } from '$lib/stores.ts';
 	export let config: Config;
 
-	let seats = [];
+	let seats: HTMLDivElement[] = [];
+	let labels: string[] = [];
+	let showIndex = 0;
 
 	screen.subscribe((n) => {
 		if (n == 7) {
-			//show result
+			showIndex = 0;
+			resultShow(1);
 		}
 	});
+
+	const resultShow = (n: number) => {
+		seats[n].style.transitionDuration = '0s';
+		seats[n].style.backgroundColor = '#000';
+		seats[n].style.color = '#fff';
+		let bgColor = '#def3ff';
+		if (n in config.last) {
+			if (config.last[n].length == 1) {
+				bgColor = '#fff';
+				labels[n] = config.last[n][0];
+			} else {
+				bgColor = '#ffe8e8';
+				labels[n] = config.last[n].length + '명';
+			}
+		}
+		setTimeout(() => {
+			showIndex = n;
+			seats[n].style.transitionDuration = '1s';
+			seats[n].style.color = '#000';
+			seats[n].style.backgroundColor = bgColor;
+			setTimeout(() => {
+				if (n < seats.length - 1) resultShow(n + 1);
+			}, 200);
+		}, 20);
+	};
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -24,7 +52,13 @@
 				: ''}"
 			bind:this={seats[i]}
 		>
-			<span>{seat.name}</span>
+			<span>
+				{#if $screen == 7 && i <= showIndex && i != 0 && i in config.last}
+					{labels[i]}
+				{:else}
+					{seat.name}
+				{/if}
+			</span>
 		</div>
 	{/each}
 </div>

@@ -114,8 +114,8 @@
 							});
 							voted.push(id);
 							voted = voted; //for update(dumb svelte)
-							if (vote[seat] == undefined) vote[seat] = [id];
-							else vote[seat].push(id);
+							if (vote[seat] == undefined) vote[seat] = [onlineID[id]];
+							else vote[seat].push(onlineID[id]);
 							socket.emit('seat submit result', id);
 							if (Object.keys(online).length == voted.length) {
 								buttonDisabled = false;
@@ -178,6 +178,7 @@
 			screen.set(6);
 		} else if ($screen == 6) {
 			buttonDisabled = true;
+			config.last = vote;
 			socket.emit('screen set', 'result');
 			screen.set(7);
 		}
@@ -196,7 +197,7 @@
 			<span class="menuText">
 				{#if $screen < 5}
 					{statusText}
-				{:else if $screen == 5}
+				{:else if $screen == 5 || $screen >= 7}
 					접속자: {Object.keys(online).length}/{config.student.length}
 				{:else if $screen == 6}
 					접속자: {Object.keys(online).length}/{config.student.length}, 투표 참여: {voted.length}/{Object.keys(

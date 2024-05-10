@@ -39,6 +39,7 @@
 						throw new Error('Empty config error');
 					if (config.seat.length == 0 || config.student.length == 0)
 						throw new Error('Empty data error');
+					config.last = {};
 					clearInterval(interval);
 					log += 'ok\n서버에 연결하는 중..';
 					screen.set(1);

@@ -32,6 +32,9 @@ declare global {
 				[student: string]: string;
 			};
 		};
+		last: {
+			[seat: string]: string[];
+		}
 	}
 
 	interface Online {

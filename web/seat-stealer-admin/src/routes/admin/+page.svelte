@@ -11,13 +11,17 @@
 		pre: {
 			seat: {},
 			student: {}
-		}
+		},
+		last: {}
 	};
 
 	screen.subscribe((num) => {
 		switch (num) {
 			case 6:
 				title = '원하는 자리에 투표해주세요.';
+				break;
+			case 7:
+				title = '투표 결과';
 				break;
 		}
 	});
