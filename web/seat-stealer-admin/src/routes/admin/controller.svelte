@@ -5,6 +5,7 @@
 	import { io, Socket } from 'socket.io-client';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { Howl, Howler } from 'howler';
 
 	export let config: Config;
 
@@ -19,6 +20,33 @@
 	let buttonDisabled: boolean = true;
 	let SnackBar: Window['SnackBar'];
 	room.set(uuidv4());
+
+	const bgm1 = new Howl({
+		src: ['/music/1.mp3'],
+		html5: true,
+		loop: true
+	});
+
+	const bgm2_1 = new Howl({
+		src: ['/music/2_1.mp3'],
+		html5: true,
+		loop: false,
+		onend: () => {
+			bgm2_2.play();
+		}
+	});
+
+	const bgm2_2 = new Howl({
+		src: ['/music/2_2.mp3'],
+		html5: true,
+		loop: true
+	});
+
+	const bgm3 = new Howl({
+		src: ['/music/3.mp3'],
+		html5: true,
+		loop: false
+	});
 
 	screen.subscribe((n) => {
 		if (n == 1) {
@@ -156,6 +184,7 @@
 	};
 
 	onMount(() => {
+		Howler.volume(0.5);
 		SnackBar = window.SnackBar;
 	});
 </script>
