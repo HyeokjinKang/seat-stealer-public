@@ -177,10 +177,10 @@
 					bgm4.volume(1);
 				}, 500);
 			} else {
-				bgm3.fade(1, 0, 200);
+				bgm1.fade(1, 0, 200);
 				setTimeout(() => {
-					bgm3.stop();
-					bgm3.volume(1);
+					bgm1.stop();
+					bgm1.volume(1);
 				}, 500);
 			}
 			bgm2.play();
@@ -190,7 +190,7 @@
 				bgm2_1.stop();
 				bgm2_1.volume(1);
 			}, 500);
-			bgm3.play();
+			bgm1.play();
 		}
 	});
 
