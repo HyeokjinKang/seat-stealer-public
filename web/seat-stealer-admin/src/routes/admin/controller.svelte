@@ -267,7 +267,11 @@
 				<!-- svelte-ignore missing-declaration -->
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<span
-					class={student.name in online ? 'online' : 'offline'}
+					class={student.name in online
+						? $screen == 6 && voted.includes(online[student.name])
+							? 'online voted'
+							: 'online'
+						: 'offline'}
 					on:click={() => {
 						forceDisconnect(student.name);
 					}}>{student.name}</span
@@ -311,6 +315,10 @@
 
 	.online {
 		cursor: pointer;
+	}
+
+	.voted {
+		color: #5073ed;
 	}
 
 	#students {
