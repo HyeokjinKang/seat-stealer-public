@@ -106,7 +106,7 @@
 		<span id="log">{log}</span>
 	</div>
 {/if}
-<div id="qrContainer" class={$screen == 5 ? 'fadeIn' : ''} bind:this={qrContainer}>
+<div id="qrContainer" class={$screen == 5 ? 'fadeIn' : ''}>
 	<canvas bind:this={qrCanvas}></canvas>
 	<span id="qrText">위 QR코드를 스캔하고 접속하세요.</span>
 </div>
