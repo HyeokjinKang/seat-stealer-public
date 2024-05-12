@@ -9,7 +9,9 @@
 	screen.subscribe((n) => {
 		if (n == 7) {
 			showIndex = 0;
-			resultShow(1);
+			setTimeout(() => {
+				resultShow(1);
+			}, 500);
 		}
 	});
 

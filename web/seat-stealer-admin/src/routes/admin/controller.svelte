@@ -171,13 +171,13 @@
 			bgm4.play();
 		} else if (n == 6) {
 			if (bgm4.playing()) {
-				bgm4.fade(1, 0, 500);
+				bgm4.fade(1, 0, 200);
 				setTimeout(() => {
 					bgm4.stop();
 					bgm4.volume(1);
 				}, 500);
 			} else {
-				bgm3.fade(1, 0, 500);
+				bgm3.fade(1, 0, 200);
 				setTimeout(() => {
 					bgm3.stop();
 					bgm3.volume(1);
@@ -185,7 +185,7 @@
 			}
 			bgm2.play();
 		} else if (n == 7) {
-			bgm2_1.fade(1, 0, 500);
+			bgm2_1.fade(1, 0, 200);
 			setTimeout(() => {
 				bgm2_1.stop();
 				bgm2_1.volume(1);
