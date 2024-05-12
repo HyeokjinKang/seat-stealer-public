@@ -19,6 +19,7 @@
 	let voted: string[] = [];
 	let buttonDisabled: boolean = true;
 	let SnackBar: Window['SnackBar'];
+	let destroyed = false;
 	room.set(uuidv4());
 
 	const bgm1 = new Howl({
@@ -161,7 +162,7 @@
 			});
 
 			socket.on('disconnect', (reason, details) => {
-				alert('서버와의 연결이 끊어졌습니다. 프로그램을 종료합니다.');
+				if (!destroyed) alert('서버와의 연결이 끊어졌습니다. 프로그램을 종료합니다.');
 				goto('/');
 			});
 		} else if (n == 2) {
@@ -244,6 +245,8 @@
 		bgm3.stop();
 		bgm4.stop();
 		unsubscribe();
+		destroyed = true;
+		if (socket) socket.disconnect();
 	});
 </script>
 
