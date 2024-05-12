@@ -66,12 +66,14 @@
 		goto('/');
 	});
 
-	socket.on('screen set', (screen) => {
+	socket.on('screen set', (screen, data) => {
 		switch (screen) {
 			case 'vote':
 				goto(`/vote?room=${roomid}`);
 				break;
 			case 'congrats':
+				socket.disconnect();
+				goto(`/congrats?seat=${data}`);
 				break;
 			case 'fight':
 				break;
