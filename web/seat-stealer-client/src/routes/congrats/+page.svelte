@@ -6,7 +6,7 @@
 
 <div>
 	<span>축하합니다!</span>
-	<span><strong>{seat}</strong>번 자리 확정</span>
+	<span><strong>{seat}번 자리</strong> 확정</span>
 </div>
 
 <style>
