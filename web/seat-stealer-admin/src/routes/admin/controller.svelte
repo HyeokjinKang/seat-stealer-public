@@ -51,7 +51,7 @@
 	const bgm4 = new Howl({
 		src: ['/music/4.mp3'],
 		html5: true,
-		loop: false
+		loop: true
 	});
 
 	const unsubscribe = screen.subscribe((n) => {
