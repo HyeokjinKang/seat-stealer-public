@@ -209,6 +209,15 @@
 		} else if ($screen == 6) {
 			buttonDisabled = true;
 			config.last = vote;
+			for (let n in config.last) {
+				if (config.last[n].length == 1) {
+					socket.emit('id screen set', 'congrats', online[config.last[n][0]]);
+				} else {
+					for (let name of config.last[n]) {
+						socket.emit('id screen set', 'fight', online[name]);
+					}
+				}
+			}
 			socket.emit('screen set', 'result');
 			screen.set(7);
 		}

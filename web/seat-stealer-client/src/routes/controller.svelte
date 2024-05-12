@@ -71,6 +71,10 @@
 			case 'vote':
 				goto(`/vote?room=${roomid}`);
 				break;
+			case 'congrats':
+				break;
+			case 'fight':
+				break;
 		}
 	});
 
