@@ -4,7 +4,7 @@
 	import { v4 as uuidv4 } from 'uuid';
 	import { io, Socket } from 'socket.io-client';
 	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { Howl, Howler } from 'howler';
 
 	export let config: Config;
@@ -54,7 +54,7 @@
 		loop: false
 	});
 
-	screen.subscribe((n) => {
+	const unsubscribe = screen.subscribe((n) => {
 		if (n == 1) {
 			statusText = '서버에 연결하는 중';
 			status = 1;
@@ -217,6 +217,15 @@
 	onMount(() => {
 		Howler.volume(0.5);
 		SnackBar = window.SnackBar;
+	});
+
+	onDestroy(() => {
+		bgm1.stop();
+		bgm2.stop();
+		bgm2_1.stop();
+		bgm3.stop();
+		bgm4.stop();
+		unsubscribe();
 	});
 </script>
 

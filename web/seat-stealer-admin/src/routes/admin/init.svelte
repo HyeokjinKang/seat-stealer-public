@@ -2,7 +2,7 @@
 	import { screen, room } from '$lib/stores.ts';
 	import { goto } from '$app/navigation';
 	import { env } from '$lib/config.ts';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import QRCode from 'qrcode';
 
 	export let config: Config;
@@ -12,7 +12,6 @@
 	let interval: NodeJS.Timeout;
 	let isFileDialogOpened = false;
 	let loaded = false;
-	let qrContainer: HTMLDivElement;
 	let qrCanvas: HTMLCanvasElement;
 
 	onMount(() => {
@@ -58,7 +57,7 @@
 		}
 	};
 
-	screen.subscribe((n) => {
+	const unsubscribe = screen.subscribe((n) => {
 		if (n == 2) {
 			log += 'ok\n새로운 방을 생성하는 중..';
 		} else if (n == 3) {
@@ -80,6 +79,11 @@
 			);
 			console.log(`${env.student}/join?room=${$room}`);
 		}
+	});
+
+	onDestroy(() => {
+		unsubscribe();
+		clearInterval(interval);
 	});
 
 	window.addEventListener('focus', function (e) {
