@@ -40,15 +40,11 @@
 		<input type="number" bind:value={seat} />
 		<button on:click={submit}>투표 →</button>
 	{:else if $screen == 3}
-		<span
-			>잠시만 기다려주세요.<br />
-			내가 투표한 자리 - <strong>{seat}</strong></span
-		>
+		<span>잠시만 기다려주세요.</span>
+		<span>내가 투표한 자리 - <strong>{seat}</strong></span>
 	{:else if $screen == 4}
-		<span
-			>승부를 기다리고 있습니다.<br />
-			{seat}번 자리 - <strong>{rival}명</strong>의 경쟁자</span
-		>
+		<span>승부를 기다리고 있습니다.</span>
+		<span>{seat}번 자리 - <strong>{rival}명</strong>의 경쟁자</span>
 	{/if}
 </div>
 
