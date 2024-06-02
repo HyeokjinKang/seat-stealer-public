@@ -5,6 +5,7 @@
 	import { screen } from '$lib/stores.ts';
 
 	let title = 'Online Seat Stealer';
+	let count = 0;
 	let config: Config = {
 		seat: [],
 		student: [],
@@ -22,6 +23,16 @@
 				break;
 			case 7:
 				title = '투표 결과';
+				break;
+			case 8:
+				title = '승부의 시간!';
+				break;
+			case 9:
+				count++;
+				title = `${count}차 배치 결과`;
+				break;
+			case 10:
+				title = '최종 결과';
 				break;
 		}
 	});

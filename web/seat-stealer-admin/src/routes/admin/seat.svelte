@@ -1,17 +1,28 @@
 <script lang="ts">
 	import { screen } from '$lib/stores.ts';
+	import { onMount } from 'svelte';
 	export let config: Config;
 
 	let seats: HTMLDivElement[] = [];
 	let labels: string[] = [];
-	let showIndex = 0;
 
 	screen.subscribe((n) => {
-		if (n == 7) {
-			showIndex = 0;
+		if (n == 6) {
+			for (let i = 0; i < seats.length; i++) {
+				seats[i].style.transitionDuration = '0s';
+				seats[i].style.backgroundColor = '#fff';
+				seats[i].style.color = '#000';
+			}
+		} else if (n == 7) {
 			setTimeout(() => {
 				resultShow(1);
 			}, 500);
+		} else if (n == 9) {
+			for (let i = 0; i < seats.length - 1; i++) {
+				if (i in config.last && config.last[i].length == 1) {
+					labels[i] = config.last[i][0];
+				}
+			}
 		}
 	});
 
@@ -30,7 +41,6 @@
 			}
 		}
 		setTimeout(() => {
-			showIndex = n;
 			seats[n].style.transitionDuration = '1s';
 			seats[n].style.color = '#000';
 			seats[n].style.backgroundColor = bgColor;
@@ -39,6 +49,13 @@
 			}, 200);
 		}, 20);
 	};
+
+	onMount(() => {
+		config.seat.forEach((seat) => {
+			labels.push(seat.name);
+		});
+		labels = labels;
+	});
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -55,11 +72,7 @@
 			bind:this={seats[i]}
 		>
 			<span>
-				{#if $screen == 7 && i <= showIndex && i != 0 && i in config.last}
-					{labels[i]}
-				{:else}
-					{seat.name}
-				{/if}
+				{labels[i]}
 			</span>
 		</div>
 	{/each}

@@ -75,6 +75,9 @@
 				socket.disconnect();
 				goto(`/congrats?seat=${d}`);
 				break;
+			case 'wait':
+				goto(`/wait?room=${roomid}`);
+				break;
 			case 'fight':
 				screen.set(4);
 				data.set(d);

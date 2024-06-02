@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation';
 	import { onDestroy, onMount } from 'svelte';
 	import { Howl, Howler } from 'howler';
+	import Rival from './rival.svelte';
 
 	export let config: Config;
 
@@ -20,6 +21,10 @@
 	let buttonDisabled: boolean = true;
 	let SnackBar: Window['SnackBar'];
 	let destroyed = false;
+	let rival: string[] = [];
+	let rivalSeat: string = '';
+	const rivalArr = ['init', 'show', 'hide'];
+	let rivalStatus = 0;
 	room.set(uuidv4());
 
 	const bgm1 = new Howl({
@@ -109,6 +114,10 @@
 				if (onlineID[id]) {
 					if (voted.includes(id)) {
 						socket.emit('seat submit result', id, 'already voted');
+						return;
+					}
+					if (seat in config.last) {
+						socket.emit('seat submit result', id, 'seat already voted');
 						return;
 					}
 					for (let seatElement of config.seat) {
@@ -209,7 +218,7 @@
 			screen.set(6);
 		} else if ($screen == 6) {
 			buttonDisabled = true;
-			config.last = vote;
+			Object.assign(config.last, vote);
 			setTimeout(() => {
 				let time = 0;
 				for (let n in config.last) {
@@ -227,10 +236,59 @@
 					}, time);
 					time += 220;
 				}
+				setTimeout(() => {
+					buttonDisabled = false;
+				}, time);
 			}, 500);
 			socket.emit('screen set', 'result');
 			screen.set(7);
+		} else if ($screen == 7) {
+			if (Object.keys(online).length == 0) {
+				screen.set(10);
+			} else {
+				nextOpponent(1);
+				buttonDisabled = true;
+				screen.set(8);
+			}
+		} else if ($screen == 9) {
+			vote = {};
+			voted = [];
+			buttonDisabled = true;
+			socket.emit('screen set', 'vote');
+			screen.set(6);
 		}
+	};
+
+	const nextOpponent = (n: number) => {
+		if (n < config.seat.length) {
+			if (n in config.last && config.last[n].length > 1) {
+				rival = config.last[n];
+				rivalSeat = config.seat[n].name;
+				rivalStatus = 1;
+			} else {
+				nextOpponent(n + 1);
+			}
+		} else {
+			screen.set(9);
+			buttonDisabled = false;
+		}
+	};
+
+	const rivalSelected = (event: any) => {
+		rivalStatus = 2;
+		config.last[rivalSeat] = [event.detail.name];
+		for (let name of rival) {
+			if (name == event.detail.name) {
+				socket.emit('id screen set', 'congrats', online[name], rivalSeat);
+				config.student = config.student.filter((student) => student.name != name);
+			} else {
+				socket.emit('id screen set', 'wait', online[name]);
+			}
+		}
+		setTimeout(() => {
+			rivalStatus = 0;
+			nextOpponent(Number(rivalSeat) + 1);
+		}, 1000);
 	};
 
 	onMount(() => {
@@ -250,7 +308,7 @@
 	});
 </script>
 
-<div id="container">
+<div id="container" class={$screen == 10 ? 'hide' : ''}>
 	<div id="rowContainer">
 		<div class="row">
 			<div id="status" class={statusArr[status]}></div>
@@ -291,6 +349,10 @@
 			{/each}
 		</div>
 	{/if}
+</div>
+
+<div id="rival" class={rivalArr[rivalStatus]}>
+	<Rival students={rival} seat={rivalSeat} on:selected={rivalSelected} />
 </div>
 
 <style>
@@ -347,6 +409,11 @@
 		background-color: #f5f5f5;
 		padding: 3vh 10vw;
 		box-sizing: border-box;
+		transition-duration: 1s;
+	}
+
+	#container.hide {
+		margin-top: 12vh;
 	}
 
 	#rowContainer {
@@ -374,5 +441,30 @@
 
 	#status.green {
 		background-color: #5bce3e;
+	}
+
+	#rival {
+		width: 100vw;
+		height: 50vh;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		position: fixed;
+		top: 15vh;
+	}
+
+	#rival.init {
+		left: 105vw;
+	}
+
+	#rival.show {
+		transition-duration: 1s;
+		left: 0;
+	}
+
+	#rival.hide {
+		transition-duration: 1s;
+		left: -105vw;
 	}
 </style>

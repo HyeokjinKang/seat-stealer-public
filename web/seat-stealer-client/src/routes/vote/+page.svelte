@@ -18,6 +18,8 @@
 		seat = '';
 		if (err == 'already voted') {
 			alert('이미 투표했습니다.');
+		} else if (err == 'seat already voted') {
+			alert('이미 배치 완료된 자리입니다.');
 		} else if (err == 'name not exist') {
 			alert('등록되지 않은 학생입니다.');
 		} else if (err == 'seat not exist') {
