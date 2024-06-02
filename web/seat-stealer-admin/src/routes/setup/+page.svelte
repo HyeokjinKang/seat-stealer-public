@@ -170,7 +170,8 @@
 		pre: {
 			seat: {},
 			student: {}
-		}
+		},
+		last: {}
 	};
 
 	let input: HTMLInputElement;
