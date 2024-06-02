@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { screen } from '$lib/stores.ts';
 	import { onMount } from 'svelte';
+	import html2canvas from 'html2canvas';
 	export let config: Config;
 
 	let seats: HTMLDivElement[] = [];
 	let labels: string[] = [];
+	let captureArea: HTMLDivElement;
 
 	screen.subscribe((n) => {
 		if (n == 6) {
@@ -50,6 +52,15 @@
 		}, 20);
 	};
 
+	export const capture = () => {
+		html2canvas(captureArea).then((canvas) => {
+			const a = document.createElement('a');
+			a.href = canvas.toDataURL('image/png');
+			a.download = `자리배치결과-${new Date().toLocaleDateString('ko-kr')}png`;
+			a.click();
+		});
+	};
+
 	onMount(() => {
 		config.seat.forEach((seat) => {
 			labels.push(seat.name);
@@ -59,7 +70,7 @@
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div id="seats">
+<div id="seats" bind:this={captureArea}>
 	{#each config.seat as seat, i}
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<!-- svelte-ignore a11y-click-events-have-key-events -->

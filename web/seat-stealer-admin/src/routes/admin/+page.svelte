@@ -4,6 +4,7 @@
 	import Controller from './controller.svelte';
 	import { screen } from '$lib/stores.ts';
 
+	let capture: () => void;
 	let title = 'Online Seat Stealer';
 	let count = 0;
 	let config: Config = {
@@ -43,10 +44,10 @@
 	{#if $screen < 6}
 		<Init bind:config />
 	{:else}
-		<Seat bind:config />
+		<Seat bind:config bind:capture />
 	{/if}
 </div>
-<Controller bind:config />
+<Controller bind:config on:capture={capture} />
 
 <style>
 	#app {

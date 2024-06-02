@@ -4,12 +4,13 @@
 	import { v4 as uuidv4 } from 'uuid';
 	import { io, Socket } from 'socket.io-client';
 	import { goto } from '$app/navigation';
-	import { onDestroy, onMount } from 'svelte';
+	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 	import { Howl, Howler } from 'howler';
 	import Rival from './rival.svelte';
 
 	export let config: Config;
 
+	const dispatch = createEventDispatcher();
 	const statusArr = ['red', 'yellow', 'green'];
 	let status = 0;
 	let statusText = '서버와 연결이 끊어짐';
@@ -245,6 +246,12 @@
 		} else if ($screen == 7) {
 			if (Object.keys(online).length == 0) {
 				screen.set(10);
+				bgm1.fade(1, 0, 200);
+				setTimeout(() => {
+					bgm1.stop();
+					bgm1.volume(1);
+				}, 500);
+				bgm3.play();
 			} else {
 				nextOpponent(1);
 				buttonDisabled = true;
@@ -291,6 +298,19 @@
 		}, 1000);
 	};
 
+	const save = () => {
+		const a = document.createElement('a');
+		const file = new Blob([JSON.stringify(config)], { type: 'application/json' });
+		a.href = URL.createObjectURL(file);
+		a.download = `자리배치설정파일-${new Date().toLocaleDateString('ko-kr')}json`;
+		a.click();
+		goto('/');
+	};
+
+	const capture = () => {
+		dispatch('capture');
+	};
+
 	onMount(() => {
 		Howler.volume(0.5);
 		SnackBar = window.SnackBar;
@@ -324,8 +344,13 @@
 				{/if}
 			</span>
 		</div>
-		<button class="menuText {buttonDisabled ? 'disabled' : ''}" on:click={next}
-			>{buttonDisabled ? '대기' : '진행 →'}</button
+		<button class="menuText {$screen == 10 ? '' : 'hide'}" on:click={capture}>이미지 저장</button>
+		<button class="menuText {$screen == 10 ? '' : 'hide'}" on:click={save}
+			>데이터 저장 & 종료</button
+		>
+		<button
+			class="menuText {buttonDisabled ? 'disabled' : ''} {$screen == 10 ? 'hide' : ''}"
+			on:click={next}>{buttonDisabled ? '대기' : '진행 →'}</button
 		>
 	</div>
 	{#if $screen >= 5}
@@ -370,13 +395,20 @@
 	.menuText {
 		font-size: 1.7vh;
 		font-weight: 600;
+		white-space: nowrap;
+		margin-right: 0.5em;
 	}
 
 	.menuText.disabled {
 		color: #888;
 	}
 
+	.menuText.hide {
+		display: none;
+	}
+
 	.row {
+		width: 100%;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
