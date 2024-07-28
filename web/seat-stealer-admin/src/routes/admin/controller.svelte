@@ -199,6 +199,7 @@
 			}
 			bgm2.play();
 		} else if (n == 7) {
+			if (bgm1.playing()) bgm1.stop();
 			bgm2_1.fade(1, 0, 200);
 			setTimeout(() => {
 				bgm2_1.stop();
