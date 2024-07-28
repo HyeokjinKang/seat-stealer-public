@@ -214,6 +214,31 @@
 				socket.emit('force disconnect', online[name]);
 	};
 
+	const reveal = () => {
+		buttonDisabled = true;
+		setTimeout(() => {
+			let time = 0;
+			for (let n in config.last) {
+				setTimeout(() => {
+					if (config.last[n].length == 1) {
+						socket.emit('id screen set', 'congrats', online[config.last[n][0]], n);
+						config.student = config.student.filter((student) => student.name != config.last[n][0]);
+					} else {
+						for (let name of config.last[n]) {
+							socket.emit('id screen set', 'fight', online[name], config.last[n].length);
+						}
+					}
+				}, time);
+				time += 220;
+			}
+			setTimeout(() => {
+				buttonDisabled = false;
+			}, time);
+		}, 500);
+		socket.emit('screen set', 'result');
+		screen.set(7);
+	};
+
 	const next = () => {
 		if (buttonDisabled) return;
 		if ($screen == 5) {
@@ -221,31 +246,8 @@
 			socket.emit('screen set', 'vote');
 			screen.set(6);
 		} else if ($screen == 6) {
-			buttonDisabled = true;
 			Object.assign(config.last, vote);
-			setTimeout(() => {
-				let time = 0;
-				for (let n in config.last) {
-					setTimeout(() => {
-						if (config.last[n].length == 1) {
-							socket.emit('id screen set', 'congrats', online[config.last[n][0]], n);
-							config.student = config.student.filter(
-								(student) => student.name != config.last[n][0]
-							);
-						} else {
-							for (let name of config.last[n]) {
-								socket.emit('id screen set', 'fight', online[name], config.last[n].length);
-							}
-						}
-					}, time);
-					time += 220;
-				}
-				setTimeout(() => {
-					buttonDisabled = false;
-				}, time);
-			}, 500);
-			socket.emit('screen set', 'result');
-			screen.set(7);
+			reveal();
 		} else if ($screen == 7) {
 			if (Object.keys(online).length == 0) {
 				screen.set(10);
