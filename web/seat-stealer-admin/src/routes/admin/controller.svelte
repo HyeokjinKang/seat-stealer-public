@@ -278,6 +278,9 @@
 				rival = config.last[n];
 				rivalSeat = config.seat[n].name;
 				rivalStatus = 1;
+				rival.forEach((name) => {
+					socket.emit('id screen set', 'fightturn', online[name]);
+				});
 			} else {
 				nextOpponent(n + 1);
 			}

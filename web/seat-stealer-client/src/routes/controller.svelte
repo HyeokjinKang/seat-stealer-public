@@ -66,8 +66,8 @@
 		goto('/');
 	});
 
-	socket.on('screen set', (num, d) => {
-		switch (num) {
+	socket.on('screen set', (name, d) => {
+		switch (name) {
 			case 'vote':
 				goto(`/vote?room=${roomid}`);
 				break;
@@ -81,6 +81,9 @@
 			case 'fight':
 				screen.set(4);
 				data.set(d);
+				break;
+			case 'fightturn':
+				screen.set(5);
 				break;
 		}
 	});

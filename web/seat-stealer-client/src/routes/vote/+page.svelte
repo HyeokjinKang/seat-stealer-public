@@ -47,6 +47,9 @@
 	{:else if $screen == 4}
 		<span>승부를 기다리고 있습니다.</span>
 		<span>{seat}번 자리 - <strong>{rival}명</strong>의 경쟁자</span>
+	{:else if $screen == 5}
+		<span>승부의 시간!</span>
+		<span>vs <strong>{rival - 1}명</strong>의 경쟁자</span>
 	{/if}
 </div>
 
