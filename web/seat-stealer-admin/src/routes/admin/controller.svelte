@@ -26,6 +26,7 @@
 	let rivalSeat: string = '';
 	const rivalArr = ['init', 'show', 'hide'];
 	let rivalStatus = 0;
+	let imageSaved = false;
 	room.set(uuidv4());
 
 	const bgm1 = new Howl({
@@ -299,6 +300,7 @@
 	};
 
 	const save = () => {
+		if (!imageSaved) return;
 		const a = document.createElement('a');
 		const file = new Blob([JSON.stringify(config)], { type: 'application/json' });
 		a.href = URL.createObjectURL(file);
@@ -309,6 +311,7 @@
 
 	const capture = () => {
 		dispatch('capture');
+		imageSaved = true;
 	};
 
 	onMount(() => {
@@ -345,8 +348,9 @@
 			</span>
 		</div>
 		<button class="menuText {$screen == 10 ? '' : 'hide'}" on:click={capture}>이미지 저장</button>
-		<button class="menuText {$screen == 10 ? '' : 'hide'}" on:click={save}
-			>데이터 저장 & 종료</button
+		<button
+			class="menuText {$screen == 10 ? (imageSaved ? '' : 'disabled') : 'hide'}"
+			on:click={save}>데이터 저장 & 종료</button
 		>
 		<button
 			class="menuText {buttonDisabled ? 'disabled' : ''} {$screen == 10 ? 'hide' : ''}"
