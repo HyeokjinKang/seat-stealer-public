@@ -27,6 +27,7 @@
 	const rivalArr = ['init', 'show', 'hide'];
 	let rivalStatus = 0;
 	let imageSaved = false;
+	let studentCopy: Config['student'] = [];
 	room.set(uuidv4());
 
 	const bgm1 = new Howl({
@@ -177,6 +178,7 @@
 				goto('/');
 			});
 		} else if (n == 2) {
+			studentCopy = JSON.parse(JSON.stringify(config.student));
 			statusText = '서버에 연결됨';
 			status = 2;
 		} else if (n == 5) {
@@ -301,6 +303,7 @@
 
 	const save = () => {
 		if (!imageSaved) return;
+		config.student = studentCopy;
 		const a = document.createElement('a');
 		const file = new Blob([JSON.stringify(config)], { type: 'application/json' });
 		a.href = URL.createObjectURL(file);
