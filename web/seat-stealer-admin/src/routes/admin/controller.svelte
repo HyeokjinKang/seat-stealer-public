@@ -303,6 +303,17 @@
 		}, 1000);
 	};
 
+	const random = () => {
+		let remainStudent = Object.keys(online);
+		for (let i = 1; i < config.seat.length; i++) {
+			if (i in config.last) continue;
+			let random = Math.floor(Math.random() * remainStudent.length);
+			config.last[i] = [remainStudent[random]];
+			delete remainStudent[random];
+		}
+		reveal();
+	};
+
 	const save = () => {
 		if (!imageSaved) return;
 		config.student = studentCopy;
@@ -357,6 +368,7 @@
 			class="menuText {$screen == 10 ? (imageSaved ? '' : 'disabled') : 'hide'}"
 			on:click={save}>데이터 저장 & 종료</button
 		>
+		<button class="menuText {$screen == 9 ? '' : 'hide'}" on:click={random}>나머지 랜덤</button>
 		<button
 			class="menuText {buttonDisabled ? 'disabled' : ''} {$screen == 10 ? 'hide' : ''}"
 			on:click={next}>{buttonDisabled ? '대기' : '진행 →'}</button
