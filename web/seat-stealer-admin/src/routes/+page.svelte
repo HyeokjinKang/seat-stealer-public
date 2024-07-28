@@ -5,6 +5,7 @@
 
 <div id="app">
 	<h1>Seat Stealer 관리자</h1>
+	<span>온라인 자리배치 프로그램</span>
 	<div id="buttonsContainer">
 		<button
 			on:click={() => {
@@ -34,6 +35,12 @@
 </div>
 
 <style>
+	span {
+		margin-top: 0.2em;
+		font-size: 2vh;
+		color: #888;
+	}
+
 	button {
 		background-color: #fff;
 		border: solid 1px #aaa;
