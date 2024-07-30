@@ -9,7 +9,7 @@
 	const statusColorArr = ['red', 'yellow', 'green', 'gray'];
 	const statusArr = ['연결 실패, 재시도 중', '서버에 연결 중', '연결됨', '연결 끊김'];
 	let status = 1;
-	let roomid = $page.url.searchParams.get('room');
+	let roomid: string | null;
 	let socket: Socket = io(env.socket);
 	let isRegistered = false;
 
@@ -105,6 +105,7 @@
 	});
 
 	onMount(() => {
+		roomid = $page.url.searchParams.get('room');
 		if (roomid != null) {
 			room.set(roomid);
 		}
