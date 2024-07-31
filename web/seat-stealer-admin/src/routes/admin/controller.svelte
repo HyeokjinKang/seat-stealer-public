@@ -101,8 +101,8 @@
 							if ($screen == 6) {
 								socket.emit('id screen set', 'vote', id);
 								buttonDisabled = true;
-							} else {
-								if (Object.keys(online).length == config.student.length) {
+							} else if ($screen == 5) {
+								if (Object.keys(online).length > 0) {
 									buttonDisabled = false;
 								}
 							}
@@ -236,7 +236,6 @@
 				buttonDisabled = false;
 			}, time);
 		}, 500);
-		socket.emit('screen set', 'result');
 		screen.set(7);
 	};
 
