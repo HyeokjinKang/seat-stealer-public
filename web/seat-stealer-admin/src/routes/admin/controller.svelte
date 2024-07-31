@@ -336,6 +336,11 @@
 
 	onMount(() => {
 		Howler.volume(0.5);
+		bgm1.stop();
+		bgm2.stop();
+		bgm2_1.stop();
+		bgm3.stop();
+		bgm4.stop();
 		SnackBar = window.SnackBar;
 	});
 
