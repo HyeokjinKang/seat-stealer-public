@@ -309,12 +309,12 @@
 	};
 
 	const random = () => {
-		let remainStudent = Object.keys(online);
+		let remainStudent = config.student;
 		for (let i = 1; i < config.seat.length; i++) {
 			if (i in config.last) continue;
 			let random = Math.floor(Math.random() * remainStudent.length);
-			config.last[i] = [remainStudent[random]];
-			delete remainStudent[random];
+			config.last[i] = [remainStudent[random].name];
+			remainStudent.splice(random, 1);
 		}
 		reveal();
 	};
