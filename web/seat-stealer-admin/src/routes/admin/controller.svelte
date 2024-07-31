@@ -161,8 +161,10 @@
 					delete online[name];
 					config.student = config.student;
 					online = online;
-					if (Object.keys(online).length != config.student.length) {
-						buttonDisabled = true;
+					if ($screen == 5) {
+						if (Object.keys(online).length == 0) {
+							buttonDisabled = true;
+						}
 					}
 					if (voted.includes(id)) {
 						voted = voted.filter((value) => value != id);
