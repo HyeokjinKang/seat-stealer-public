@@ -2,9 +2,14 @@
 	import Init from './init.svelte';
 	import Seat from './seat.svelte';
 	import Controller from './controller.svelte';
-	import { screen } from '$lib/stores.ts';
+	import { screen, room } from '$lib/stores.ts';
+	import { env } from '$lib/config.ts';
+	import { onDestroy } from 'svelte';
+	import QRCode from 'qrcode';
 
 	let capture: () => void;
+	let qrCanvas: HTMLCanvasElement;
+	let qrCanvasBig: HTMLCanvasElement;
 	let title = 'Online Seat Stealer';
 	let count = 0;
 	let config: Config = {
@@ -17,8 +22,26 @@
 		last: {}
 	};
 
-	screen.subscribe((num) => {
+	const unsubscribe = screen.subscribe((num) => {
 		switch (num) {
+			case 3:
+				QRCode.toCanvas(
+					qrCanvas,
+					`${env.student}/join?room=${$room}`,
+					{ margin: 0, width: Math.round((innerHeight / 100) * 5), errorCorrectionLevel: 'L' },
+					function (error) {
+						if (error) console.error(error);
+					}
+				);
+				QRCode.toCanvas(
+					qrCanvasBig,
+					`${env.student}/join?room=${$room}`,
+					{ margin: 0, width: Math.round((innerHeight / 100) * 30), errorCorrectionLevel: 'Q' },
+					function (error) {
+						if (error) console.error(error);
+					}
+				);
+				break;
 			case 6:
 				title = '원하는 자리에 투표해주세요.';
 				break;
@@ -37,9 +60,17 @@
 				break;
 		}
 	});
+
+	onDestroy(() => {
+		unsubscribe();
+	});
 </script>
 
 <div id="app">
+	<canvas bind:this={qrCanvas} id="qrCanvas"></canvas>
+	<div id="qrOverlay">
+		<canvas bind:this={qrCanvasBig}></canvas>
+	</div>
 	<h1>{title}</h1>
 	{#if $screen < 6}
 		<Init bind:config />
@@ -59,5 +90,30 @@
 		justify-content: flex-start;
 		padding: 3vh 10vw;
 		box-sizing: border-box;
+	}
+
+	#qrCanvas {
+		position: fixed;
+		top: 1vw;
+		left: 1vw;
+	}
+
+	#qrCanvas:hover + #qrOverlay {
+		display: flex;
+	}
+
+	#qrOverlay {
+		display: none;
+		align-items: center;
+		justify-content: center;
+		position: fixed;
+		width: 50vw;
+		height: 50vh;
+		top: 15vh;
+		left: 25vw;
+		background: rgba(255, 255, 255, 0.8);
+		border: 1px solid #eee;
+		border-radius: 1vh;
+		z-index: 10;
 	}
 </style>
