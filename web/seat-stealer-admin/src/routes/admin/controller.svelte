@@ -161,15 +161,19 @@
 					delete online[name];
 					config.student = config.student;
 					online = online;
-					if ($screen == 5) {
-						if (Object.keys(online).length == 0) {
-							buttonDisabled = true;
-						}
-					}
 					if (voted.includes(id)) {
 						voted = voted.filter((value) => value != id);
 						for (let seat in vote) {
 							vote[seat] = vote[seat].filter((value) => value != id);
+						}
+					}
+					if ($screen == 5) {
+						if (Object.keys(online).length == 0) {
+							buttonDisabled = true;
+						}
+					} else if ($screen == 6) {
+						if (Object.keys(online).length == voted.length) {
+							buttonDisabled = false;
 						}
 					}
 				}
