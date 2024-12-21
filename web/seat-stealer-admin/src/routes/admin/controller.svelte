@@ -157,16 +157,16 @@
 						timeout: 4000,
 						position: 'tr'
 					});
+					if (voted.includes(id)) {
+						voted = voted.filter((value) => value != id);
+						for (let seat in vote) {
+							vote[seat] = vote[seat].filter((value) => value != onlineID[id]);
+						}
+					}
 					delete onlineID[id];
 					delete online[name];
 					config.student = config.student;
 					online = online;
-					if (voted.includes(id)) {
-						voted = voted.filter((value) => value != id);
-						for (let seat in vote) {
-							vote[seat] = vote[seat].filter((value) => value != id);
-						}
-					}
 					if ($screen == 5) {
 						if (Object.keys(online).length == 0) {
 							buttonDisabled = true;
