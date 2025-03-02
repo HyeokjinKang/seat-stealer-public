@@ -20,7 +20,7 @@
 				resultShow(1);
 			}, 500);
 		} else if (n == 9) {
-			for (let i = 0; i < seats.length - 1; i++) {
+			for (let i = 0; i < seats.length; i++) {
 				if (i in config.last && config.last[i].length == 1) {
 					labels[i] = config.last[i][0];
 				}
