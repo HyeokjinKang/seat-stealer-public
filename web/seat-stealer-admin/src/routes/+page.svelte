@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	const version = '1.0';
+	const version = '1.1.0';
 </script>
 
 <div id="app">
 	<h1>Seat Stealer 관리자</h1>
 	<span>온라인 자리배치 프로그램</span>
+	<span id="ver">v{version}</span>
 	<div id="buttonsContainer">
 		<button
 			on:click={() => {
@@ -22,15 +23,14 @@
 				goto('/admin');
 			}}>온라인 자리 배치</button
 		>
-		<!-- <button
+		<button
 			on:click={() => {
-				goto('/random');
-			}}>일괄 랜덤 자리 배치</button
-		> -->
+				goto('/offline');
+			}}>오프라인 자리 배치</button
+		>
 	</div>
 	<div id="footer">
-		<span id="ver">v{version}</span>
-		<span id="credit">ⓒCoupyworks, 2024.</span>
+		<img id="credit" src="/coupyworks_black_1x.svg" alt="Coupyworks" />
 	</div>
 </div>
 
@@ -86,12 +86,12 @@
 	}
 
 	#ver {
+		margin-top: 0.5em;
 		font-size: 1.5vh;
 		color: #888;
 	}
 
 	#credit {
-		font-size: 1.7vh;
-		color: #555;
+		height: 5vh;
 	}
 </style>
