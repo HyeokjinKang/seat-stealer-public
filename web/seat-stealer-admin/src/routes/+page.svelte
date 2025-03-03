@@ -30,7 +30,9 @@
 		>
 	</div>
 	<div id="footer">
-		<img id="credit" src="/coupyworks_black_1x.svg" alt="Coupyworks" />
+		<a href="https://bento.me/coupy" target="_blank">
+			<img src="/coupyworks_black_1x.svg" alt="Coupyworks" id="credit" />
+		</a>
 	</div>
 </div>
 
