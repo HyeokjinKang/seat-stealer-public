@@ -109,6 +109,9 @@
 				for (let i = 0; i < Object.keys(vote).length; i++) {
 					const key = Object.keys(vote)[i];
 					vote[key] = vote[key].filter((v) => v != config.student[selectedStudent].name);
+					if (vote[key].length == 0) {
+						delete vote[key];
+					}
 				}
 			} else {
 				voted.push(config.student[selectedStudent].name);
@@ -221,8 +224,6 @@
 			rivalStatus = 0;
 			nextOpponent(Number(rivalSeat) + 1);
 		}, 1000);
-		console.log(`config.last[${rivalSeat}] = [${event.detail.name}]`);
-		console.log(config.last);
 	};
 
 	const random = () => {

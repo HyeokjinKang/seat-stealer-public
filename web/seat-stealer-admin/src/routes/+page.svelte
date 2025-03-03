@@ -92,6 +92,6 @@
 	}
 
 	#credit {
-		height: 5vh;
+		height: 4vh;
 	}
 </style>
