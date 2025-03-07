@@ -2,7 +2,7 @@
 	import Changelog from './changelog.svelte';
 	import { goto } from '$app/navigation';
 
-	const version = '1.1.1';
+	const version = '1.1.2';
 	let changelogContainer: HTMLDivElement;
 	let isChangelogOpened = false;
 
@@ -55,6 +55,7 @@
 		<a href="https://bento.me/coupy" target="_blank">
 			<img src="/coupyworks_black_1x.svg" alt="Coupyworks" id="credit" />
 		</a>
+		<a href="https://forms.gle/bxGVUTNkPiTGuFap6">피드백 남기기</a>
 	</div>
 </div>
 
@@ -81,6 +82,10 @@
 	button:hover {
 		color: #555;
 		border: solid 1px #555;
+	}
+
+	a {
+		color: black;
 	}
 
 	#changelog {
