@@ -5,7 +5,7 @@
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FHyeokjinKang%2Fseat-stealer-public&count_bg=%233DC8AC&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 [![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/HyeokjinKang)
 ![GitHub Repo stars](https://img.shields.io/github/stars/HyeokjinKang/seat-stealer-public?style=social)
-![X Follow](https://img.shields.io/twitter/follow/coupyworks?style=social)
+[![X Follow](https://img.shields.io/twitter/follow/coupyworks?style=social)](https://x.com/coupyworks)
 
 Seat Stealer는 모든 학급에서 사용 가능한 차세대 자리배치 프로그램입니다.  
 학생들이 직접 참여하여 원하는 자리를 선택하고, 쟁탈전을 벌이며 자리배치를 하나의 게임으로 즐길 수 있도록 도와줍니다.  
