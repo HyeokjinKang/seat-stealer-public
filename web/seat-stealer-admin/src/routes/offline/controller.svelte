@@ -104,7 +104,6 @@
 			return;
 		}
 		if (selectedStudent != -1) {
-			if (vote[s] == undefined) vote[s] = [];
 			if (voted.includes(config.student[selectedStudent].name)) {
 				for (let i = 0; i < Object.keys(vote).length; i++) {
 					const key = Object.keys(vote)[i];
@@ -116,6 +115,7 @@
 			} else {
 				voted.push(config.student[selectedStudent].name);
 			}
+			if (vote[s] == undefined) vote[s] = [];
 			vote[s].push(config.student[selectedStudent].name);
 			voted = voted;
 			vote = vote;
