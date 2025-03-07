@@ -1,12 +1,34 @@
 <script lang="ts">
+	import Changelog from './changelog.svelte';
 	import { goto } from '$app/navigation';
-	const version = '1.1.0';
+
+	const version = '1.1.1';
+	let changelogContainer: HTMLDivElement;
+	let isChangelogOpened = false;
+
+	const verClick = () => {
+		if (isChangelogOpened) {
+			changelogContainer.style.opacity = '0';
+			changelogContainer.style.pointerEvents = 'none';
+			isChangelogOpened = false;
+		} else {
+			changelogContainer.style.opacity = '1';
+			changelogContainer.style.pointerEvents = 'auto';
+			isChangelogOpened = true;
+		}
+	};
 </script>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div id="app">
 	<h1>Seat Stealer 관리자</h1>
 	<span>온라인 자리배치 프로그램</span>
-	<span id="ver">v{version}</span>
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<span id="ver" on:click={verClick}>v{version}</span>
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<div id="changelog" on:click={verClick} bind:this={changelogContainer}>
+		<Changelog />
+	</div>
 	<div id="buttonsContainer">
 		<button
 			on:click={() => {
@@ -61,6 +83,21 @@
 		border: solid 1px #555;
 	}
 
+	#changelog {
+		position: fixed;
+		top: 15vh;
+		display: flex;
+		padding: 3vh 2vw;
+		justify-content: center;
+		align-items: flex-start;
+		flex-direction: column;
+		background-color: white;
+		border: 1px solid #222;
+		pointer-events: none;
+		opacity: 0;
+		cursor: pointer;
+	}
+
 	#app {
 		display: flex;
 		width: 100%;
@@ -91,6 +128,8 @@
 		margin-top: 0.5em;
 		font-size: 1.5vh;
 		color: #888;
+		cursor: pointer;
+		text-decoration: underline;
 	}
 
 	#credit {
