@@ -2,7 +2,7 @@
 # Seat Stealer
 ![GitHub License](https://img.shields.io/github/license/HyeokjinKang/seat-stealer-public)
 ![GitHub last commit](https://img.shields.io/github/last-commit/HyeokjinKang/seat-stealer-public)
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FHyeokjinKang%2Fseat-stealer-public&count_bg=%233DC8AC&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+[![Hits](https://hits.sh/github.com/HyeokjinKang/seat-stealer-public.svg)](https://hits.sh/github.com/HyeokjinKang/seat-stealer-public/)
 [![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/HyeokjinKang)
 ![GitHub Repo stars](https://img.shields.io/github/stars/HyeokjinKang/seat-stealer-public?style=social)
 [![X Follow](https://img.shields.io/twitter/follow/coupyworks?style=social)](https://x.com/coupyworks)
