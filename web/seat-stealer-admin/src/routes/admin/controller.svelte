@@ -7,11 +7,13 @@
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 	import { Howl, Howler } from 'howler';
 	import Rival from './rival.svelte';
+	import Game from './game.svelte';
 
 	export let config: Config;
 
 	const dispatch = createEventDispatcher();
 	const statusArr = ['red', 'yellow', 'green'];
+	const rivalArr = ['init', 'show', 'hide'];
 	let status = 0;
 	let statusText = '서버와 연결이 끊어짐';
 	let socket: Socket;
@@ -24,10 +26,13 @@
 	let destroyed = false;
 	let rival: string[] = [];
 	let rivalSeat: string = '';
-	const rivalArr = ['init', 'show', 'hide'];
 	let rivalStatus = 0;
 	let imageSaved = false;
 	let studentCopy: Config['student'] = [];
+	let initializeGame: () => void;
+	let getMessage: (name: string, data: object) => void;
+	let gameMode = 1; // 0: 간단, 1: 미니게임
+
 	room.set(uuidv4());
 
 	const bgm1 = new Howl({
@@ -145,6 +150,12 @@
 					socket.emit('seat submit result', id, 'seat not exist');
 				} else {
 					socket.emit('seat submit result', id, 'name not exist');
+				}
+			});
+
+			socket.on('game', (data: object, id: string) => {
+				if (onlineID[id]) {
+					getMessage(onlineID[id], data);
 				}
 			});
 
@@ -282,10 +293,14 @@
 			if (n in config.last && config.last[n].length > 1) {
 				rival = config.last[n];
 				rivalSeat = config.seat[n].name;
-				rivalStatus = 1;
-				rival.forEach((name) => {
-					socket.emit('id screen set', 'fightturn', online[name]);
-				});
+				if (gameMode == 0) {
+					rivalStatus = 1;
+					rival.forEach((name) => {
+						socket.emit('id screen set', 'fightturn', online[name]);
+					});
+				} else {
+					initializeGame();
+				}
 			} else {
 				nextOpponent(n + 1);
 			}
@@ -296,7 +311,7 @@
 	};
 
 	const rivalSelected = (event: any) => {
-		rivalStatus = 2;
+		if (gameMode == 0) rivalStatus = 2;
 		config.last[rivalSeat] = [event.detail.name];
 		for (let name of rival) {
 			if (name == event.detail.name) {
@@ -310,6 +325,17 @@
 			rivalStatus = 0;
 			nextOpponent(Number(rivalSeat) + 1);
 		}, 1000);
+	};
+
+	const sendMessage = (event: any) => {
+		if (event.detail.name in online) {
+			socket.emit(
+				'id game message',
+				event.detail.topic,
+				online[event.detail.name],
+				event.detail.data
+			);
+		}
 	};
 
 	const random = () => {
@@ -361,7 +387,7 @@
 	});
 </script>
 
-<div id="container" class={$screen == 10 ? 'hide' : ''}>
+<div id="container" class={($screen == 10 ? 'hide,' : '') + ($screen == 8 ? 'dark' : '')}>
 	<div id="rowContainer">
 		<div class="row">
 			<div id="status" class={statusArr[status]}></div>
@@ -411,6 +437,15 @@
 	{/if}
 </div>
 
+<Game
+	students={rival}
+	seat={rivalSeat}
+	bind:init={initializeGame}
+	bind:getMessage
+	on:selected={rivalSelected}
+	on:sendMessage={sendMessage}
+/>
+
 <div id="rival" class={rivalArr[rivalStatus]}>
 	<Rival students={rival} seat={rivalSeat} on:selected={rivalSelected} />
 </div>
@@ -427,7 +462,34 @@
 		cursor: default;
 	}
 
+	#container {
+		width: 100%;
+		height: 20vh;
+		border: none;
+		border-top: 1px solid #888888;
+		padding: 3vh 10vw;
+		box-sizing: border-box;
+		transition-duration: 1s;
+	}
+
+	#container:not(.dark) {
+		background-color: #f5f5f5;
+		--text-color: #000;
+		--text-disabled-color: #aaa;
+	}
+
+	#container.dark {
+		background-color: #222222;
+		--text-color: #fff;
+		--text-disabled-color: #555;
+	}
+
+	#container.hide {
+		margin-top: 12vh;
+	}
+
 	.menuText {
+		color: var(--text-color);
 		font-size: 1.7vh;
 		font-weight: 600;
 		white-space: nowrap;
@@ -435,7 +497,7 @@
 	}
 
 	.menuText.disabled {
-		color: #888;
+		color: var(--text-disabled-color);
 	}
 
 	.menuText.hide {
@@ -451,7 +513,7 @@
 	}
 
 	.offline {
-		color: #aaa;
+		color: var(--text-disabled-color);
 	}
 
 	.online {
@@ -463,24 +525,9 @@
 	}
 
 	#students {
-		color: #000;
+		color: var(--text-color);
 		margin-left: calc(1.2vh + 0.3em);
 		font-size: 1.7vh;
-	}
-
-	#container {
-		width: 100%;
-		height: 20vh;
-		border: none;
-		border-top: 1px solid #888888;
-		background-color: #f5f5f5;
-		padding: 3vh 10vw;
-		box-sizing: border-box;
-		transition-duration: 1s;
-	}
-
-	#container.hide {
-		margin-top: 12vh;
 	}
 
 	#rowContainer {

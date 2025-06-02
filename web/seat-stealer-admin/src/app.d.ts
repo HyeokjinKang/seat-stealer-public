@@ -52,6 +52,11 @@ declare global {
 	interface Window {
 		SnackBar: (option: object) => void;
 	}
+
+	interface Game {
+		name?: string;
+		component: typeof import('svelte').SvelteComponent;
+	}
 }
 
 export {};
