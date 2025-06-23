@@ -31,7 +31,7 @@
 	let studentCopy: Config['student'] = [];
 	let initializeGame: () => Promise<void>;
 	let getMessage: (name: string, data: object) => void;
-	let gameMode = 1; // 0: 간단, 1: 미니게임
+	let gameMode = -1; // 0: 간단, 1: 미니게임
 
 	room.set(uuidv4());
 
@@ -456,16 +456,16 @@
 		</div>
 	{/if}
 </div>
-
-<Game
-	students={rival}
-	seat={rivalSeat}
-	bind:init={initializeGame}
-	bind:getMessage
-	on:selected={rivalSelected}
-	on:sendMessage={sendMessage}
-/>
-
+<div id="game">
+	<Game
+		students={rival}
+		seat={rivalSeat}
+		bind:init={initializeGame}
+		bind:getMessage
+		on:selected={rivalSelected}
+		on:sendMessage={sendMessage}
+	/>
+</div>
 <div id="rival" class={rivalArr[rivalStatus]}>
 	<Rival students={rival} seat={rivalSeat} on:selected={rivalSelected} />
 </div>
@@ -600,5 +600,10 @@
 	#rival.hide {
 		transition-duration: 1s;
 		left: -105vw;
+	}
+
+	#game {
+		user-select: none;
+		pointer-events: none;
 	}
 </style>

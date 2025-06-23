@@ -12,7 +12,6 @@
 	let animCounter = 0;
 	let random5Game: GameInfo[] = [];
 	let selectedDisplay = 0;
-	let selectedGameNum: number;
 	let selectedGameInfo: GameInfo;
 	let gameComponent: Game;
 	let rouletteAnim: NodeJS.Timeout | number;
@@ -21,11 +20,10 @@
 		animCounter = 1;
 		selectedDisplay = 0;
 		random5Game = games.sort(() => Math.random() - 0.5).slice(0, 5);
+		let selectedGameNum = Math.floor(Math.random() * random5Game.length);
 		if (gameNum != -1) {
 			random5Game.push(games[gameNum]);
 			selectedGameNum = 5;
-		} else {
-			selectedGameNum = Math.floor(Math.random() * random5Game.length);
 		}
 		selectedGameInfo = random5Game[selectedGameNum];
 		gameComponent = await import(`../../lib/games/${selectedGameInfo.fileName}.svelte`);
