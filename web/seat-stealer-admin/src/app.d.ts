@@ -53,9 +53,16 @@ declare global {
 		SnackBar: (option: object) => void;
 	}
 
+	interface GameInfo {
+		name: string;
+		minPlayers: number;
+		maxPlayers: number;
+		fileName: string;
+	}
+
 	interface Game {
-		name?: string;
-		component: typeof import('svelte').SvelteComponent;
+		information: GameInfo;
+		default: typeof import('svelte').SvelteComponent;
 	}
 }
 

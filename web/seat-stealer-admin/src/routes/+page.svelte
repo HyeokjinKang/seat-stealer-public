@@ -42,7 +42,7 @@
 		>
 		<button
 			on:click={() => {
-				goto('/admin');
+				goto('/admin?gameNum=0');
 			}}>온라인 자리 배치</button
 		>
 		<button

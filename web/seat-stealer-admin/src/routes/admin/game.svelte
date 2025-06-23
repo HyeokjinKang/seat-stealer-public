@@ -1,24 +1,34 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { games } from '$lib/games';
+	import { page } from '$app/stores';
+
+	const gameNum = Number($page.url.searchParams.get('gameNum')) ?? -1; // this is for testing purposes
 
 	export let students: string[];
 	export let seat: string;
 
 	const dispatch = createEventDispatcher();
 	let animCounter = 0;
-	let random5Game: Game[] = [];
+	let random5Game: GameInfo[] = [];
 	let selectedDisplay = 0;
-	let selectedGame: number;
-	let game: Game;
+	let selectedNum: number;
+	let selectedGame: GameInfo;
+	let gameComponent: Game;
 	let rouletteAnim: NodeJS.Timeout | number;
 
-	export const init = () => {
+	export const init = async () => {
 		animCounter = 1;
 		selectedDisplay = 0;
 		random5Game = games.sort(() => Math.random() - 0.5).slice(0, 5);
-		selectedGame = Math.floor(Math.random() * random5Game.length);
-		game = random5Game[selectedGame];
+		if (gameNum != -1) {
+			random5Game.push(games[gameNum]);
+			selectedNum = 5;
+		} else {
+			selectedNum = Math.floor(Math.random() * random5Game.length);
+		}
+		selectedGame = random5Game[selectedNum];
+		gameComponent = await import(`../../lib/games/${selectedGame.fileName}.svelte`);
 		setTimeout(() => {
 			animCounter++; // 2
 			setTimeout(() => {
@@ -33,7 +43,7 @@
 					animCounter++; // 4
 					setTimeout(() => {
 						clearInterval(rouletteAnim);
-						selectedDisplay = selectedGame;
+						selectedDisplay = selectedNum;
 						setTimeout(() => {
 							animCounter++; // 5
 							setTimeout(() => {
@@ -68,7 +78,7 @@
 
 <div id="gameContainer" class={animCounter > 0 ? 'show' : ''}>
 	{#if animCounter > 3}
-		<div id="titleContainer" class={animCounter > 4 ? '' : 'unshow'}>{game.name}</div>
+		<div id="titleContainer" class={animCounter > 4 ? '' : 'unshow'}>{selectedGame.name}</div>
 	{/if}
 
 	{#if animCounter < 6}
@@ -97,7 +107,7 @@
 			</div>
 		</div>
 	{:else}
-		<svelte:component this={game.component} />
+		<svelte:component this={gameComponent.default} />
 	{/if}
 </div>
 
