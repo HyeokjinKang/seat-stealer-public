@@ -387,7 +387,10 @@
 	});
 </script>
 
-<div id="container" class={($screen == 10 ? 'hide,' : '') + ($screen == 8 ? 'dark' : '')}>
+<div
+	id="container"
+	class={($screen == 10 ? 'hide,' : '') + ($screen == 8 && gameMode == 1 ? 'dark' : '')}
+>
 	<div id="rowContainer">
 		<div class="row">
 			<div id="status" class={statusArr[status]}></div>
@@ -409,10 +412,27 @@
 			on:click={save}>데이터 저장 & 종료</button
 		>
 		<button class="menuText {$screen == 9 ? '' : 'hide'}" on:click={random}>나머지 랜덤</button>
-		<button
-			class="menuText {buttonDisabled ? 'disabled' : ''} {$screen == 10 ? 'hide' : ''}"
-			on:click={next}>{buttonDisabled ? '대기' : '진행 →'}</button
-		>
+		{#if $screen == 7 && Object.keys(online).length != 0}
+			<button
+				class="menuText"
+				on:click={() => {
+					gameMode = 0;
+					next();
+				}}>간단모드 →</button
+			>
+			<button
+				class="menuText"
+				on:click={() => {
+					gameMode = 1;
+					next();
+				}}>게임모드 →</button
+			>
+		{:else}
+			<button
+				class="menuText {buttonDisabled ? 'disabled' : ''} {$screen == 10 ? 'hide' : ''}"
+				on:click={next}>{buttonDisabled ? '대기' : '진행 →'}</button
+			>
+		{/if}
 	</div>
 	{#if $screen >= 5}
 		<div id="students">
