@@ -12,8 +12,8 @@
 	let animCounter = 0;
 	let random5Game: GameInfo[] = [];
 	let selectedDisplay = 0;
-	let selectedNum: number;
-	let selectedGame: GameInfo;
+	let selectedGameNum: number;
+	let selectedGameInfo: GameInfo;
 	let gameComponent: Game;
 	let rouletteAnim: NodeJS.Timeout | number;
 
@@ -23,12 +23,12 @@
 		random5Game = games.sort(() => Math.random() - 0.5).slice(0, 5);
 		if (gameNum != -1) {
 			random5Game.push(games[gameNum]);
-			selectedNum = 5;
+			selectedGameNum = 5;
 		} else {
-			selectedNum = Math.floor(Math.random() * random5Game.length);
+			selectedGameNum = Math.floor(Math.random() * random5Game.length);
 		}
-		selectedGame = random5Game[selectedNum];
-		gameComponent = await import(`../../lib/games/${selectedGame.fileName}.svelte`);
+		selectedGameInfo = random5Game[selectedGameNum];
+		gameComponent = await import(`../../lib/games/${selectedGameInfo.fileName}.svelte`);
 		setTimeout(() => {
 			animCounter++; // 2
 			setTimeout(() => {
@@ -43,7 +43,7 @@
 					animCounter++; // 4
 					setTimeout(() => {
 						clearInterval(rouletteAnim);
-						selectedDisplay = selectedNum;
+						selectedDisplay = selectedGameNum;
 						setTimeout(() => {
 							animCounter++; // 5
 							setTimeout(() => {
@@ -78,7 +78,7 @@
 
 <div id="gameContainer" class={animCounter > 0 ? 'show' : ''}>
 	{#if animCounter > 3}
-		<div id="titleContainer" class={animCounter > 4 ? '' : 'unshow'}>{selectedGame.name}</div>
+		<div id="titleContainer" class={animCounter > 4 ? '' : 'unshow'}>{selectedGameInfo.name}</div>
 	{/if}
 
 	{#if animCounter < 6}
