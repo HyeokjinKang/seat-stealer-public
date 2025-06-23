@@ -29,7 +29,7 @@
 	let rivalStatus = 0;
 	let imageSaved = false;
 	let studentCopy: Config['student'] = [];
-	let initializeGame: () => void;
+	let initializeGame: () => Promise<void>;
 	let getMessage: (name: string, data: object) => void;
 	let gameMode = 1; // 0: 간단, 1: 미니게임
 
