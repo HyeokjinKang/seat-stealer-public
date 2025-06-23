@@ -2,7 +2,7 @@
 	import Changelog from './changelog.svelte';
 	import { goto } from '$app/navigation';
 
-	const version = '1.2.0';
+	const version = '2.0.0';
 	let changelogContainer: HTMLDivElement;
 	let isChangelogOpened = false;
 
