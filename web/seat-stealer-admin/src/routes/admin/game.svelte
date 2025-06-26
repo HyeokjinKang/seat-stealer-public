@@ -16,12 +16,15 @@
 	let gameComponent: Game;
 	let rouletteAnim: NodeJS.Timeout | number;
 
+	export let gotMessage: (name: string, data: object) => void;
+
 	export const init = async () => {
 		animCounter = 1;
 		selectedDisplay = 0;
 		random5Game = games.sort(() => Math.random() - 0.5).slice(0, 5);
 		let selectedGameNum = Math.floor(Math.random() * random5Game.length);
 		if (gameNum != -1) {
+			games.sort((a, b) => b.name.localeCompare(a.name));
 			random5Game.push(games[gameNum]);
 			selectedGameNum = 5;
 		}
@@ -54,10 +57,6 @@
 		}, 500);
 	};
 
-	export const getMessage = (name: string, data: object) => {
-		console.log(`Message from ${name}:`, data);
-	};
-
 	const selected = (name: string) => {
 		dispatch('selected', {
 			name,
@@ -65,18 +64,20 @@
 		});
 	};
 
-	const sendMessage = (name: string, topic: string, data: object) => {
+	const sendMessage = (event: any) => {
 		dispatch('sendMessage', {
-			name,
-			topic,
-			data
+			name: event.detail.name,
+			topic: event.detail.topic,
+			data: event.detail.data
 		});
 	};
 </script>
 
 <div id="gameContainer" class={animCounter > 0 ? 'show' : ''}>
 	{#if animCounter > 3}
-		<div id="titleContainer" class={animCounter > 4 ? '' : 'unshow'}>{selectedGameInfo.name}</div>
+		<div id="titleContainer" class={animCounter > 4 ? '' : 'unshow'}>
+			<span>{selectedGameInfo.name}</span>
+		</div>
 	{/if}
 
 	{#if animCounter < 6}
@@ -105,7 +106,12 @@
 			</div>
 		</div>
 	{:else}
-		<svelte:component this={gameComponent.default} />
+		<svelte:component
+			this={gameComponent.default}
+			bind:gotMessage
+			on:sendMessage={sendMessage}
+			{students}
+		/>
 	{/if}
 </div>
 
@@ -121,6 +127,8 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		padding-top: 12vh;
+		box-sizing: border-box;
 		background-color: rgba(0, 0, 0, 0.8);
 		color: #fff;
 		opacity: 0;
@@ -228,7 +236,7 @@
 		top: 0;
 		left: 0;
 		width: 100vw;
-		padding: 3vh 0 4vh 0;
+		height: 12vh;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -242,5 +250,9 @@
 
 	#titleContainer.unshow {
 		transform: translateY(-12vh);
+	}
+
+	#titleContainer > span {
+		margin-bottom: 1vh;
 	}
 </style>

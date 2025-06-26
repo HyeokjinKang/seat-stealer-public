@@ -88,6 +88,15 @@
 		}
 	});
 
+	socket.on('game message', (topic, d) => {
+		switch (topic) {
+			case 'game init':
+				screen.set(6);
+				data.set(d.gameid);
+				break;
+		}
+	});
+
 	data.subscribe((input) => {
 		if (input == '') return;
 		if ($screen == 0) {

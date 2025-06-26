@@ -48,6 +48,10 @@ io.on("connection", (socket) => {
     io.to(id).emit("seat submit result", error);
   });
 
+  socket.on("id game message", (topic, id, data) => {
+    io.to(id).emit("game message", topic, data);
+  });
+
   socket.on("force disconnect", (id) => {
     io.to(id).emit("fatal");
   });

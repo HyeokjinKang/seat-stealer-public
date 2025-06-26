@@ -4,6 +4,7 @@
 
 	let seat = '';
 	let rival = 0;
+	let gameComponent: any;
 
 	onMount(() => {
 		screen.set(2);
@@ -28,10 +29,13 @@
 		error.set('');
 	});
 
-	data.subscribe((data) => {
+	data.subscribe(async (data) => {
 		if (data == '') return;
 		if ($screen == 4) {
 			rival = Number(data);
+		} else if ($screen == 6) {
+			gameComponent = await import(`./games/${data}.svelte`);
+			screen.set(7);
 		}
 	});
 </script>
@@ -50,6 +54,10 @@
 	{:else if $screen == 5}
 		<span>승부의 시간!</span>
 		<span>vs <strong>{rival - 1}명</strong>의 경쟁자</span>
+	{:else if $screen == 6}
+		<span>게임을 불러오는 중..</span>
+	{:else if $screen == 7}
+		<svelte:component this={gameComponent} />
 	{/if}
 </div>
 

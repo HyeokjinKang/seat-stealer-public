@@ -30,7 +30,7 @@
 	let imageSaved = false;
 	let studentCopy: Config['student'] = [];
 	let initializeGame: () => Promise<void>;
-	let getMessage: (name: string, data: object) => void;
+	let gotMessage: (name: string, data: object) => void;
 	let gameMode = -1; // 0: 간단, 1: 미니게임
 
 	room.set(uuidv4());
@@ -155,7 +155,7 @@
 
 			socket.on('game', (data: object, id: string) => {
 				if (onlineID[id]) {
-					getMessage(onlineID[id], data);
+					gotMessage(onlineID[id], data);
 				}
 			});
 
@@ -293,11 +293,11 @@
 			if (n in config.last && config.last[n].length > 1) {
 				rival = config.last[n];
 				rivalSeat = config.seat[n].name;
+				rival.forEach((name) => {
+					socket.emit('id screen set', 'fightturn', online[name]);
+				});
 				if (gameMode == 0) {
 					rivalStatus = 1;
-					rival.forEach((name) => {
-						socket.emit('id screen set', 'fightturn', online[name]);
-					});
 				} else {
 					initializeGame();
 				}
@@ -461,7 +461,7 @@
 		students={rival}
 		seat={rivalSeat}
 		bind:init={initializeGame}
-		bind:getMessage
+		bind:gotMessage
 		on:selected={rivalSelected}
 		on:sendMessage={sendMessage}
 	/>
